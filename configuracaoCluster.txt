@@ -1,0 +1,55 @@
+## Instalação
+
+# Usuário a ser criado em todas as máquinas, mesmo nome e mesmo id!
+Usuário: mpi
+Senha: 1566mpi
+
+# Escolher uma máquina para ser a gerente e realizar o seguinte comando
+ssh-keygen -t dsa
+cat .ssh/id_dsa.pub >> .ssh/authorized_keys
+
+# Executar o comando abaixo para cada máquina, a partir do gerente
+scp -r .ssh/ mpi@maquina:/home/mpi/
+
+IPs:
+padqx0: 200.129.39.174 12.04.4 LTS
+padqx1: 200.129.39.175 13.04         Não funcionou
+padqx2: 200.129.39.176 12.04.4 LTS   Não funcionou
+padqx3: 200.129.39.178 12.04.4 LTS   
+padqx4: 200.129.39.172 12.04.4.LTS   Não funcionou
+padqx5: 200.129.39.171 12.04.4 LTS
+
+# Comando para atualizar os fontes do Ubuntu (já foi feito)
+sudo sed 's/br\.archive\.ubuntu\.com/ubuntu\.c3sl\.ufpr\.br/g' sources.list > /tmp/sources.list
+cp /tmp/sources.list /etc/apt/sources.list
+
+# Conteúdo do arquivo /etc/hosts (adicionar e adaptar) em cada máquina
+200.129.39.174 padqx0 
+200.129.39.175 padqx1 
+200.129.39.176 padqx2
+200.129.39.178 padqx3
+200.129.39.172 padqx4
+200.129.39.171 padqx5
+
+# Pacotes instalados em todas as máquinas
+sshfs libopenmpi-dev openmpi-bin2
+
+# Comando para montar o diretório de padqx0
+sshfs -o idmap=user mpi@padqx0:/home/mpi/programas /home/mpi/programas
+
+# Linha do fstab (não precisa colocar)
+sshfs#mpi@padqx0:/home/mpi/programas /home/mpi/programas fuse defaults,idmap=user 0 0
+
+## Utilização
+
+# Ligue as máquinas, logue como mpi e execute em cada uma
+sshfs -o idmap=user mpi@padqx0:/home/mpi/programas /home/mpi/programas
+
+# Entre no diretório programas e coloque seu código lá. Compile com mpicc. Também coloque um arquivo chamado
+# hostfile com o seguinte
+padqx0 slots=2
+padqx3 slots=2
+padqx5 slots=2
+
+# Execute o programa da seguinte forma
+mpirun --hostfile ~/programas/hostfile -np 6 ./a.out
