@@ -34,7 +34,7 @@ int main (int argc, char *argv[]) {
     
     for (i = 0; i < 8; ++i)
         for (j = 0; j < 8; ++j) {
-            MA[i][j] = MB[i][j] = 1;
+            MA[i][j] = MB[i][j] = 2;
             MC[i][j] = 0;
         }
 

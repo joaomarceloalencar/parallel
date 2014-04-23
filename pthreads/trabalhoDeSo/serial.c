@@ -69,7 +69,6 @@ struct node *Quick_Sort_List(struct node *head, int l, int r) {
                 swap(head, i, j);
                 i++;
             }
-//            printf("l:%d r:%d i:%d j:%d\n", l, r, i, j);
         }
         swap(head, i - 1, l);
         Quick_Sort_List(head, l, i);

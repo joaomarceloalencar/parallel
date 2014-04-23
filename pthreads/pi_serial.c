@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define RAIO 5
-#define N 100000000
+#define N 1000000000
 
 double fRand(double fMin, double fMax) {
     double f = (double) rand() / RAND_MAX;
@@ -12,8 +12,8 @@ double fRand(double fMin, double fMax) {
 }
 
 int main(int argc, char *argv[]) {
-    int i;
-    int countCircle = 0;
+    long i;
+    long countCircle = 0;
 
     srand(time(0));
   
@@ -28,5 +28,5 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("%d %.5f\n",i,  ((double) 4 * countCircle) / N);
+    printf("%ld %.5f\n", i,  ((double) 4 * countCircle) / N);
 }

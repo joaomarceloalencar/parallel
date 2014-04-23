@@ -12,15 +12,16 @@ Cria um arquivo com o tamanho indicado, preenchido com inteiros aleatórios.
 int main( int argc, char *argv[] ) {
    
    char *filename = argv[1];
-   int size = atoi(argv[2]);
+//   int size = atoi(argv[2]);
 
    FILE *fp = fopen(filename, "w+");
-   int numberOfInts = size * 1024 * 1024 / INTSIZE;
+//   int numberOfInts = size * 1024 * 1024 / INTSIZE;
+   int numberOfInts = 100;
    
    int i;
    srand(time(0));
    for ( i = 0; i < numberOfInts; i++ ) {
-      int number = rand();
+      int number = rand() % 100;
       fwrite( &number, sizeof(number), 1, fp); 
    }
    
