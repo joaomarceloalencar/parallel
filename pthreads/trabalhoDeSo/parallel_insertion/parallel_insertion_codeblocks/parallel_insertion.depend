@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1398277071 source:/home/jmhal/parallel/pthreads/trabalhoDeSo/parallel_insertion/linked_list.c
+	<stdlib.h>
+	<stdio.h>
+	"linked_list.h"
+
+1398290272 /home/jmhal/parallel/pthreads/trabalhoDeSo/parallel_insertion/linked_list.h
+	<pthread.h>
+
+1398345367 source:/home/jmhal/parallel/pthreads/trabalhoDeSo/parallel_insertion/parallel_insertion.c
+	<stdio.h>
+	<pthread.h>
+	<stdlib.h>
+	"linked_list.h"
+

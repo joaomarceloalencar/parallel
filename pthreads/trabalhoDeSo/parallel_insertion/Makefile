@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -pthread
 DEPS = linked_list.h
 OBJ = linked_list.o parallel_insertion.o
 
