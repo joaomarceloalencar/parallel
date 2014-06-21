@@ -1,0 +1,12 @@
+
+Nome: João Victor de Almeida Monteiro,
+Curso: Sistema de Informação,
+Trabaho: Ordenação paralela,
+matricula: 0357427.
+
+Descrição do trabalho:
+
+O trabalho foi realizado em C++,ele deve ser executado com o compilador g++ e com o parametro -lpthread adicionado.
+Os arquivos gerados serão salvos em uma pasta chamada 'binario' com extensão '.bin'.
+
+

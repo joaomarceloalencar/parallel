@@ -1,0 +1,3 @@
+Sistema: Ubuntu 13.04
+Linguagem: C
+compilador: gcc 4.7.3

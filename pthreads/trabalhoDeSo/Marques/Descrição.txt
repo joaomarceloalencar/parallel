@@ -1,0 +1,6 @@
+Linguagem: C++
+G++ Version: 4.8.1
+SO usado: Linux Voyage
+Possui Makefile
+
+PC: Core I5 X4 2.5 GHz  4GB Ram

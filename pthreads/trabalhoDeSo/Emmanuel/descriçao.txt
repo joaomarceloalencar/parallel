@@ -1,0 +1,13 @@
+                         Título: Ordenação paralela de uma lista encadeada.
+
+Nome: Emmanuel Cainã Alves de Melo
+matricula: 0357414
+
+Descrição:
+
+Trabalho feito em C++;
+Deve ser executado com o compilador g++ e com o parametro -lpthread;
+Possui um arquivo '.h' que deve estar presente na mesma pasta do arquivo '.cpp';
+Os arquivos gerados e esritos serão salvos na mesma pasta do arquivo '.cpp';
+
+
