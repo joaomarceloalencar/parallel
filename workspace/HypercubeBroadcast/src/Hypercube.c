@@ -26,6 +26,11 @@ Node *createNode(char *str, int d) {
 	return n;
 }
 
+void deleteNode(Node *node, int d){
+	free(node->id);
+	free(node);
+}
+
 int areNodesEquals(Node *node1, Node *node2){
 	if (node1->d == node2->d){
 		int i;
@@ -77,14 +82,37 @@ Node **createEquivalenceArray(int d){
 	for (i = 1; i <= d ; i++) {
 		int j;
 		for (j = 1; j <= i; j++) {
-			/* Create the first node.*/
-			Node *newNode = createNode(NULL, d);
-			int k;
-			for (k = d - 1; k >= d - i + (j - 1); k--)
-				newNode->id[k] = '1';
-			newNode->id[d - i - (j - 1)] = '1';
+			/* If all the equivalence classes are full, quit.*/
+			if (lastpos == n - 1 ) break;
+			if (i + j > d) break;
 
-			/* Just a small memory waste. */
+		    Node *newNode = createNode(NULL, d);
+			int k;
+			for (k = 0; k <= d - i - j; k++) newNode->id[k] = '0';
+			newNode->id[k] = '1';
+			for (k = d - i - j + 2; k <= d - i; k++) newNode->id[k] = '0';
+			for (k = d - i + 1; k < d; k++) newNode->id[k] = '1';
+
+			/* The bit at position m(t) from the right is 1. */
+			int nt = lastpos;
+			int mt = 1 + ((nt - 1) % d);
+			while (newNode->id[d-mt] != '1') {
+				Node *oldNode = newNode;
+				newNode = shiftNodeLeft(newNode, d);
+				deleteNode(oldNode, d);
+			}
+
+			/* Two extra restrictions for the case where j = 1.
+			 * If m(t) > 1, the bit at position m(t) - 1 from right is a 0.
+			 * If m(t) = 1, the bit at the leftmost position is a 0. */
+			while(!(mt > 1 && newNode->id[d - mt + 1] == '0') && !(mt == 1 && newNode->id[0] == '0')) {
+				Node *oldNode = newNode;
+				newNode = shiftNodeLeft(newNode, d);
+				deleteNode(oldNode, d);
+			}
+
+			/* Just a small memory waste.
+			 * Creates all the other nodes in the class.*/
 			while (!doesNodeExists(newNode, lastpos)) {
 				equivalenceClasses[lastpos] = newNode;
 				lastpos++;
@@ -104,4 +132,157 @@ Node **createEquivalenceArray(int d){
 }
 
 
+int n(char *id, int d) {
+	int n = (int) pow(2, d);
+	int i;
+	for (i = 0; i < n; i++) {
+		/* Different dimensions. */
+		if (equivalenceClasses[i]->d != d)
+			return -1;
+
+		int value = 0;
+		int j;
+		for (j = 0; j < d; j++)
+			if (equivalenceClasses[i]->id[j] == id[j])
+				value++;
+
+		if (value == d)
+			return i;
+		else
+			continue;
+	}
+	return -1;
+}
+
+int m(char *id, int d) {
+	int a = n(id,d);
+	return 1 + (a -1)%d;
+}
+
+NodeSet **createESet(Node **equivalenceClasses, int d){
+	int q = (int) ceil((pow(2,d) - 1) / d);
+	int size = (int) pow(2, d);
+	NodeSet **E = (NodeSet **) malloc((q+1)*sizeof(NodeSet *));
+
+	/* First set. */
+	E[0] = (NodeSet *) malloc(sizeof(NodeSet));
+	E[0]->size = 1;
+	E[0]->set = (Node *) malloc(sizeof(Node));
+	E[0]->set[0] = *createNode(NULL,d);
+
+	/* Other Sets. */
+	int i;
+	for (i = 1; i < q + 1; i++){
+		E[i] = (NodeSet *) malloc(sizeof(NodeSet));
+		E[i]->size = 0;
+
+		int j;
+		for (j = 0; j < size; j++) {
+			int nt = n(equivalenceClasses[j]->id,d);
+			if (i != q) {
+				if ((nt >= (i - 1) * d + 1) && (nt <= i * d))
+					E[i]->size++;
+			} else if (i == q) {
+				if ((nt >= (q - 1) * d + 1) && (nt <= pow(2, d) - 1))
+					E[i]->size++;
+			}
+
+		}
+		E[i]->set = (Node *) malloc(E[i]->size * sizeof(Node));
+		E[i]->size = 0;
+		for (j = 0; j < size; j++) {
+			int nt = n(equivalenceClasses[j]->id, d);
+			if (i != q) {
+				if ((nt >= (i - 1) * d + 1) && (nt <= i * d)) {
+					E[i]->set[E[i]->size] = *equivalenceClasses[j];
+					E[i]->size++;
+				}
+			} else if (i == q) {
+				if ((nt >= (q - 1) * d + 1) && (nt <= pow(2, d) - 1)) {
+					E[i]->set[E[i]->size] = *equivalenceClasses[j];
+					E[i]->size++;
+				}
+			}
+		}
+	}
+
+	return E;
+}
+
+EdgeSet **createASet(Node **equivalenceClasses, NodeSet **E, int d) {
+	int q = (int) ceil((pow(2,d) - 1) / d);
+	int i;
+	// int size = (int) pow(2, d);
+	EdgeSet **A = (EdgeSet **) malloc((q+1)*sizeof(EdgeSet *));
+
+	/* First set. It's empty, just for control. */
+	A[0] = (EdgeSet *) malloc(sizeof(EdgeSet));
+	A[0]->size = 0;
+	A[0]->set = NULL;
+
+	/* The real A sets that matter. */
+	// int i;
+	for (i = 1; i < q + 1; i++){
+		/* Allocate the set.*/
+		A[i] = (EdgeSet *) malloc(sizeof(EdgeSet));
+		A[i]->size = 0;
+		A[i]->set = NULL;
+
+		int j;
+		/* For each t belonging to E[i]. */
+		for (j = 0; j < E[i]->size; j++) {
+			/* Define _t as the same t with an invertion of the m(t) from the right. */
+			Node *t = createNode(E[i]->set[j].id,d);
+			Node *temp = createNode(E[i]->set[j].id, d);
+
+			int mt = m(t->id, d);
+			t->id[d - mt] = '0';
+
+			Node *_t = createNode(t->id,d);
+
+			free(t);
+			t = temp;
+
+			/* Find if _t belongs to the union of E[0]...E[i-1].*/
+			int status = 0;
+			int k;
+			for (k = 0; k < i; k++) {
+				int l;
+				/* Searching for _t in the specific E[k].*/
+				for (l = 0; l < E[k]->size; l++) {
+					if (areNodesEquals(_t, &E[k]->set[l])) {
+						status = 1;
+						break;
+					}
+				}
+				if (status == 1)
+					break;
+			}
+			/* If _t does not belong to the union, let's try another t.*/
+			if (status == 0)
+				continue;
+			else if (status == 1){
+				/* Update the A[i] set.*/
+				EdgeSet *temp = A[i];
+				A[i] = (EdgeSet *) malloc(sizeof(EdgeSet));
+				A[i]->size = temp->size + 1;
+				A[i]->set = (Edge *) malloc((A[i]->size) * sizeof(Edge));
+
+				Edge *newEdge = (Edge *) malloc(sizeof(Edge));;
+				newEdge->start = createNode(_t->id, d);
+				newEdge->end = createNode(t->id, d);
+
+				int p;
+				for (p = 0; p < temp->size; p++)
+					A[i]->set[p] = temp->set[p];
+				A[i]->set[p] = *newEdge;
+
+				free(temp);
+				free(newEdge);
+				free(_t);
+			}
+		}
+	}
+	return A;
+}
 

@@ -24,7 +24,7 @@ typedef struct NodeSet{
 } NodeSet;
 
 typedef struct EdgeSet{
-	Node *set;
+	Edge *set;
 	int size;
 } EdgeSet;
 
@@ -35,15 +35,18 @@ typedef struct R {
 } R;
 
 Node *createNode(char *str, int d);
+void deleteNode(Node *node, int d);
 int areNodesEquals(Node *node1, Node *node2);
 int doesNodeExists(Node *node, int lastpos);
 Node **createEquivalenceArray(int d);
 Node *shiftNodeLeft(Node *node, int d);
 void printEquivalenceClasses(int d);
+NodeSet **createESet(Node **equivalenceClasses, int d);
+EdgeSet **createASet(Node **equivalenceClasses, NodeSet **E, int d);
 
 
-int n(Node t);
-int m(Node t);
+int n(char *id, int d);
+int m(char *id, int d);
 
 
 
