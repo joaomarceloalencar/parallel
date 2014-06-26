@@ -286,3 +286,45 @@ EdgeSet **createASet(Node **equivalenceClasses, NodeSet **E, int d) {
 	return A;
 }
 
+EdgeSet **createASetForNewRoot(EdgeSet **A, char root[], int d) {
+	int q = (int) ceil((pow(2,d) - 1) / d);
+	EdgeSet **newRootA = (EdgeSet **) malloc((q+1)*sizeof(EdgeSet *));
+
+	/* For each edge set A[i]. */
+	int i;
+	for (i = 0; i < q + 1; i++ ) {
+		/* A new newRootA[i] with the same size as A[i].*/
+		newRootA[i] = (EdgeSet *) malloc(sizeof(EdgeSet));
+		newRootA[i]->size = A[i]->size;
+		newRootA[i]->set = (Edge *) malloc((A[i]->size) * sizeof(Edge));
+
+		/* For each edge in the set A[i]. */
+		int j;
+		for (j = 0; j < A[i]->size; j++) {
+			Node *start = A[i]->set[j].start;
+			Node *end = A[i]->set[j].end;
+
+			Node *newStart = createNode(NULL, d);
+			Node *newEnd = createNode(NULL, d);
+
+			/* Do the xor. */
+			int k;
+			for (k = 0; k < d; k++){
+				if ((root[k] == '1' && start->id[k] == '1') || (root[k] == '0' && start->id[k] == '0'))
+					newStart->id[k] = '0';
+				else
+					newStart->id[k] = '1';
+
+				if ((root[k] == '1' && end->id[k] == '1') || (root[k] == '0' && end->id[k] == '0'))
+					newEnd->id[k] = '0';
+				else
+					newEnd->id[k] = '1';
+			}
+
+			newRootA[i]->set[j].start = newStart;
+			newRootA[i]->set[j].end = newEnd;
+		}
+	}
+
+	return newRootA;
+}

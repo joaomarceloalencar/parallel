@@ -12,10 +12,8 @@
 #include "mpi.h" 
 #include <tgmath.h>
 
-
- 
 int main(int argc, char *argv[]) {
-	int d = 4;
+	int d = 5;
 	int q = (int) ceil((pow(2,d) - 1) / d);
 
     Node **equivalenceClasses = createEquivalenceArray(d);
@@ -28,6 +26,19 @@ int main(int argc, char *argv[]) {
 		int j;
 		for (j = 0; j < A[i]->size; j++) {
 			Edge e = A[i]->set[j];
+			printf("start: %s end: %s \n", e.start->id, e.end->id);
+		}
+	}
+
+	char root[] = "01000";
+	EdgeSet **newA = createASetForNewRoot(A, root, d);
+
+	printf("\n New root: %s\n", root);
+	for (i = 0; i < q + 1; i++) {
+		printf("newA[%d], size: %d\n", i, newA[i]->size);
+		int j;
+		for (j = 0; j < newA[i]->size; j++) {
+			Edge e = newA[i]->set[j];
 			printf("start: %s end: %s \n", e.start->id, e.end->id);
 		}
 	}

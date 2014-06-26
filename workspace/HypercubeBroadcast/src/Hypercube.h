@@ -28,12 +28,6 @@ typedef struct EdgeSet{
 	int size;
 } EdgeSet;
 
-typedef struct R {
-	NodeSet *set;
-	int i;
-	int j;
-} R;
-
 Node *createNode(char *str, int d);
 void deleteNode(Node *node, int d);
 int areNodesEquals(Node *node1, Node *node2);
@@ -43,12 +37,9 @@ Node *shiftNodeLeft(Node *node, int d);
 void printEquivalenceClasses(int d);
 NodeSet **createESet(Node **equivalenceClasses, int d);
 EdgeSet **createASet(Node **equivalenceClasses, NodeSet **E, int d);
-
+EdgeSet **createASetForNewRoot(EdgeSet **A, char root[], int d);
 
 int n(char *id, int d);
 int m(char *id, int d);
-
-
-
 
 #endif /* HYPERCUBE_H_ */
