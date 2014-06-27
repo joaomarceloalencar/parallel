@@ -328,3 +328,64 @@ EdgeSet **createASetForNewRoot(EdgeSet **A, char root[], int d) {
 
 	return newRootA;
 }
+
+int binaryToInt(char id[], int d) {
+	int result = 0;
+
+	int i;
+	for (i = 0; i < d; i++){
+		int pos = 0;
+		if (id[i] == '1')
+			pos = 1;
+		else if (id[i] == '0')
+			pos = 0;
+
+		result += pos * (int) pow(2, d - i - 1);
+	}
+
+	return result;
+}
+
+char *intToBinary(int id, int d) {
+	if (id > pow(2,d))
+		return NULL;
+	char *result = (char *) malloc(d * sizeof(char));
+
+	int i;
+	for (i = d - 1; i >= 0; i--){
+		if (id % 2 == 0)
+			result[i] = '0';
+		else if (id % 2 == 1)
+			result[i] = '1';
+		id = id / 2;
+	}
+	return result;
+}
+
+EdgeSet **createASuperSet(EdgeSet **A, int nproc, int d) {
+	int q = (int) ceil((pow(2,d) - 1) / d);
+	int i;
+	EdgeSet **A_total = (EdgeSet **) malloc((q + 1) * sizeof(EdgeSet *));
+	for (i = 0; i < q + 1; i++) {
+		A_total[i] = (EdgeSet *) malloc(sizeof(EdgeSet));
+		A_total[i]->size = nproc * A[i]->size;
+		A_total[i]->set = (Edge *) malloc((nproc * A[i]->size) * sizeof(Edge));
+		int pos = 0;
+
+		/* For each process, create a spanning tree */
+		int j;
+		for (j = 0; j < nproc; j++) {
+			char *root = intToBinary(j, d);
+			EdgeSet **newA = createASetForNewRoot(A, root, d);
+			/* Iterate through each spanning tree in order to create the superset A_total[i]. */
+			int k;
+			for (k = 0; k < newA[i]->size; k++) {
+				A_total[i]->set[pos] = newA[i]->set[k];
+				pos++;
+			}
+		}
+	}
+	return A_total;
+}
+
+

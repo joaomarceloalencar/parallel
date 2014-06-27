@@ -38,8 +38,13 @@ void printEquivalenceClasses(int d);
 NodeSet **createESet(Node **equivalenceClasses, int d);
 EdgeSet **createASet(Node **equivalenceClasses, NodeSet **E, int d);
 EdgeSet **createASetForNewRoot(EdgeSet **A, char root[], int d);
+EdgeSet **createASuperSet(EdgeSet **A, int nproc, int d);
 
 int n(char *id, int d);
 int m(char *id, int d);
+
+int binaryToInt(char id[], int d);
+char *intToBinary(int id, int d);
+
 
 #endif /* HYPERCUBE_H_ */
