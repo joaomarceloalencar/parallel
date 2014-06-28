@@ -11,6 +11,7 @@
 int main(int argc, char *argv[]) {
     int messageSize = atoi(argv[1]);
     messageSize = messageSize * 1024;
+    int debug = atoi(argv[2]);
 
 	int rank, nproc;
 	MPI_Init(&argc, &argv);
@@ -33,6 +34,13 @@ int main(int argc, char *argv[]) {
 	double endComm = MPI_Wtime();
 
 	printf("%.4f\n", endComm - startComm);
+
+	if (debug) {
+		int m;
+		for (m = 0; m < messageSize * nproc; m++) {
+			printf("Process%d fullArray[%d]:%d\n", rank, m, fullArray[m]);
+		}
+	}
 
     MPI_Finalize();
     return 0;
