@@ -8,14 +8,19 @@
  ============================================================================
  */
 #include <stdio.h>
-#include "Hypercube.h"
-#include "mpi.h" 
-#include <tgmath.h>
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include "Hypercube.h"
+#include "mpi.h"
 
 int main(int argc, char *argv[]) {
 	int d = atoi(argv[1]);
+    int messageSize = atoi(argv[2]);
+    messageSize = messageSize * 1024;
+    int debug = atoi(argv[3]);
+
+
 	int q = (int) ceil((pow(2,d) - 1) / d);
 	int rank, nproc;
 
@@ -27,7 +32,6 @@ int main(int argc, char *argv[]) {
      * char with several copies of the process rank. The final array after the broadcast
      * will be sequential junks of the processes ranks repeated by the message size.
      */
-    int messageSize = atoi(argv[2]);
     char *message = (char *) malloc(messageSize * sizeof(char));
     int m;
     for (m = 0; m < messageSize; m++)
@@ -43,6 +47,8 @@ int main(int argc, char *argv[]) {
     EdgeSet **A = createASet(equivalenceClasses, E, d);
     EdgeSet **A_total = createASuperSet(A, nproc, d);
     char *binaryRank = intToBinary(rank, d);
+
+    double startComm = MPI_Wtime();
 
     /* For each superSet A_total[i] in my spanning tree, look for edges with my rank. */
     int step;
@@ -83,9 +89,15 @@ int main(int argc, char *argv[]) {
     	}
     }
 
-    for (m = 0; m < messageSize * nproc; m++) {
-    	printf("Process%d fullArray[%d]:%d\n", rank, m, fullArray[m]);
-    }
+    double endComm = MPI_Wtime();
+
+    printf("%.4f\n", endComm - startComm);
+
+	if (debug) {
+		for (m = 0; m < messageSize * nproc; m++) {
+			printf("Process%d fullArray[%d]:%d\n", rank, m, fullArray[m]);
+		}
+	}
 
     MPI_Finalize();
     return 0;

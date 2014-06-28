@@ -7,7 +7,7 @@
 #include "Hypercube.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <tgmath.h>
+#include <math.h>
 
 Node **equivalenceClasses = NULL;
 
