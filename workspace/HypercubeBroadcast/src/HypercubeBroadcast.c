@@ -37,95 +37,51 @@ int main(int argc, char *argv[]) {
     for (m = rank * messageSize; m < rank * messageSize + messageSize; m++)
     	fullArray[m] = (char) rank;
 
-    /* Create an array containing all the operations at step 1,2, ... q for each root. */
+    /* Create the equivalence classes.*/
     Node **equivalenceClasses = createEquivalenceArray(d);
     NodeSet **E = createESet(equivalenceClasses, d);
-    EdgeSet **_A = createASet(equivalenceClasses, E, d);
+    EdgeSet **A = createASet(equivalenceClasses, E, d);
+    EdgeSet **A_total = createASuperSet(A, nproc, d);
+    char *binaryRank = intToBinary(rank, d);
 
-    EdgeSet ***A = (EdgeSet ***) malloc(nproc * sizeof(EdgeSet **));
-    int root;
-    for (root = 0; root < nproc; root++) {
-    	A[root] = createASetForNewRoot(_A, intToBinary(root,d), d);
-    	int step;
-    	for (step = 0; step < q + 1; step++) {
-    		int edge;
-    		for (edge = 0; edge < A[root][step]->size; edge++) {
-    			char *start = A[root][step]->set[edge].start->id;
-    			char *end = A[root][step]->set[edge].end->id;
-    			 // printf("Process%d root%d Step%d start:%s end:%s\n", rank, root, step, start, end);
+    /* For each superSet A_total[i] in my spanning tree, look for edges with my rank. */
+    int step;
+    for (step = 0; step < q + 1; step++) {
+    	/* Create an array of requisitions requests. A process will wait for all communication
+    	 * in a step to be over before starting a new step.
+    	 */
+    	MPI_Request *requests = (MPI_Request *) malloc(A_total[step]->size * sizeof(MPI_Request));
+    	int numberOfRequests = 0;
 
-    			char *binaryRank = intToBinary(rank, d);
-    			/* If this process is a start node, then sends the message. */
-				if (!strcmp(binaryRank, start)) {
-					printf("Process%d root%d Step%d start: %s end: %s\n", rank, root, step, start, end);
-				}
-				/* Else if is a end node, receives the message. */
-				else if (!strcmp(binaryRank, end)) {
-					printf("Process%d root%d Step%d start: %s end: %s\n", rank, root, step, start, end);
-				}
+    	/* Let's verify each edge in A_total[i]. */
+    	int edge;
+    	for (edge = 0; edge < A_total[step]->size; edge++) {
+    		Edge e = A_total[step]->set[edge];
+    		int root = edge / A[step]->size;
+    		/* If this process is a start node, then sends the message. */
+    		if (!strcmp(binaryRank, e.start->id)) {
+    			// printf("process%d root%d step%d start: %s end: %s\n", rank, root, step, e.start->id, e.end->id);
+    			/* The message starts at position fullArray + root * messageSize and goes on by messageSize bytes. */
+    			int rankDest = binaryToInt(e.end->id, d);
+    			MPI_Isend(fullArray + root * messageSize, messageSize, MPI_CHAR, rankDest, 0, MPI_COMM_WORLD, &requests[numberOfRequests]);
+    			numberOfRequests++;
+    		}
+    		/* Else if is a end node, receives the message. */
+    		else if (!strcmp(binaryRank, e.end->id)) {
+    			// printf("process%d root%d step%d start: %s end: %s\n", rank, root, step, e.start->id, e.end->id);
+    			/* The message is stored at position fullArray + root * messageSize and goes on by messageSize bytes. */
+    			int rankSouce = binaryToInt(e.start->id, d);
+    			MPI_Irecv(fullArray + root * messageSize, messageSize, MPI_CHAR, rankSouce, 0, MPI_COMM_WORLD, &requests[numberOfRequests]);
+    			numberOfRequests++;
     		}
     	}
+
+    	int req = 0;
+    	for (req = 0; req < numberOfRequests; req++) {
+    		MPI_Status status;
+    		MPI_Wait(&requests[req], &status);
+    	}
     }
-
-
-//    int i;
-//    for (i = 0; i < q + 1; i++){
-//    	int j;
-//    	for (j = 0; j < A_total[i]->size; j++){
-//    		char *start = A_total[i]->set[j].start->id;
-//    		char *end = A_total[i]->set[j].end->id;
-//    		printf("Process%d step%d start:%s end:%s\n", rank, i, start, end);
-//    	}
-//    }
-
-//    /* For each superSet A_total[i] in my spanning tree, look for edges with my rank. */
-//    int i;
-//    for (i = 0; i < q + 1; i++) {
-//    	/* Let's verify each edge in newA[i]. */
-//    	int j;
-//    	for (j = 0; j < A_total[i]->size; j++) {
-//    		Edge e = A_total[i]->set[j];
-//    		// int rootRank = j / A[i]->size;
-//    		printf("Process%d Step%d j%d start:%s end:%s\n", rank, i, j, e.start->id, e.end->id);
-//    		/* If this process is a start node, then sends the message. */
-//    		if (!strcmp(binaryRank, e.start->id)) {
-//    			// printf("Process%d root%d Step%d start: %s end: %s\n", rank, rootRank, i, binaryRank, e.end->id);
-//    		}
-//    		/* Else if is a end node, receives the message. */
-//    		else if (!strcmp(binaryRank, e.end->id)) {
-//    			// printf("Process%d root%d Step%d start: %s end: %s\n", rank, rootRank, i, e.start->id, binaryRank);
-//    		}
-//    	}
-//    }
-
-	/*
-	int i;
-
-
-	for (i = 0; i < q + 1; i++ ){
-		printf("A[%d], size: %d\n", i, A[i]->size);
-		int j;
-		for (j = 0; j < A[i]->size; j++) {
-			Edge e = A[i]->set[j];
-			printf("start: %s end: %s \n", e.start->id, e.end->id);
-		}
-	}
-
-
-    int i;
-	char root[] = "101";
-	EdgeSet **newA = createASetForNewRoot(A, root, d);
-
-	printf("\n New root: %s\n", root);
-	for (i = 0; i < q + 1; i++) {
-		printf("newA[%d], size: %d\n", i, newA[i]->size);
-		int j;
-		for (j = 0; j < newA[i]->size; j++) {
-			Edge e = newA[i]->set[j];
-			printf("start: %s end: %s \n", e.start->id, e.end->id);
-		}
-	}
-	*/
 
     for (m = 0; m < messageSize * nproc; m++) {
     	printf("Process%d fullArray[%d]:%d\n", rank, m, fullArray[m]);
