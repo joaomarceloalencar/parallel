@@ -1,0 +1,1 @@
+nvcc --compiler-bindir mpic++ projeto.cpp projeto
