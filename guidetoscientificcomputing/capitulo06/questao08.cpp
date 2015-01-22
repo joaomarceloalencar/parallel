@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cassert>
 
+#define ORDER 12 
+
 void printMatrix(double **A, int row, int col);
 void matExclude(double **A, double **new_A, int N, int i, int j);
 double det(double **A, int N);
@@ -9,8 +11,8 @@ double det(double **A, int N);
 int main(int argc, char *argv[])
 {
    double **A;
-   int rows = 2;
-   int cols = 2; 
+   int rows = ORDER;
+   int cols = ORDER; 
    A = new double* [rows];   
    for (int i = 0; i < rows; i++)
    {
@@ -21,26 +23,15 @@ int main(int argc, char *argv[])
        }
    }   
 
-   double **new_A;
-   new_A = new double* [rows - 1];   
-   for (int i = 0; i < rows - 1; i++)
-   {
-       new_A[i] = new double [cols - 1];
-   }   
-
    printMatrix(A, rows, cols);
-   matExclude(A, new_A, 2, 1, 1);
-   printMatrix(new_A, rows - 1, cols - 1);
+   std::cout << det(A, ORDER) << "\n";
 
    for (int i = 0; i < rows; i++)
    {
        delete [] A[i];
-       if ( i < rows - 1)
-          delete [] new_A[i]; 
    }
 
    delete [] A;
-   delete [] new_A;
    return 0;
 }
 
@@ -84,12 +75,11 @@ void matExclude(double **A, double **new_A, int N, int i, int j)
 
 double det(double **A, int N)
 {
-   /*
-   if (N == 2) 
+   if (N == 3) 
    {
-      return A[0][0] * A[1][1] - A[0][1] * A[1][0]; 
+      return A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);  
    }
-   */
+
    if (N == 1)
    {
       return A[0][0];
@@ -101,7 +91,7 @@ double det(double **A, int N)
    for (int i = 0; i < N; i++)
    {
       _A[i] = new double* [N - 1];
-      for (int j = 0;  j < N; j++)
+      for (int j = 0;  j < N - 1; j++)
       {
          _A[i][j] = new double [N - 1]; 
       }
@@ -116,7 +106,7 @@ double det(double **A, int N)
 
    for (int i = 0; i < N; i++)
    {
-      for (int j = 0; j < N; j++) 
+      for (int j = 0; j < N - 1; j++) 
       {
          delete [] _A[i][j];
       }
