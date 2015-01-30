@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cassert>
 
-#define ORDER 12 
+#define ORDER 15 
 
 void printMatrix(double **A, int row, int col);
 void matExclude(double **A, double **new_A, int N, int i, int j);
@@ -80,11 +80,6 @@ double det(double **A, int N)
       return A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);  
    }
 
-   if (N == 1)
-   {
-      return A[0][0];
-   }   
-
    double _det = 0;
    double ***_A;
    _A = new double** [N];
@@ -100,6 +95,10 @@ double det(double **A, int N)
    for (int i = 0; i < N; i++)
    {
       matExclude(A, _A[i], N, 0, i);
+      if (A[0][i] == 0)
+      {
+         return 0;
+      }
       _det += A[0][i] * std::pow(-1, i) * det(_A[i], N - 1);
    }
 
