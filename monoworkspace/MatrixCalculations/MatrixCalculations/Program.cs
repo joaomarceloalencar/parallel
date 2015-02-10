@@ -173,7 +173,7 @@ namespace MatrixCalculations
 			Console.WriteLine("{0}", A.determinant ());
 			*/
 
-			Console.WriteLine("{0}", Matrix.distributedDeterminant (A, ref args));
+			Console.WriteLine("{0}", 	Matrix.distributedDeterminant (A, ref args));
 
 		}
 	}
