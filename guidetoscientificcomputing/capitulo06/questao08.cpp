@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cassert>
 
-#define ORDER 15 
+#define ORDER 12 
 
 void printMatrix(double **A, int row, int col);
 void matExclude(double **A, double **new_A, int N, int i, int j);
@@ -19,10 +19,16 @@ int main(int argc, char *argv[])
        A[i] = new double [cols];
        for (int j = 0;  j < cols; j++)
        {
-           A[i][j] = i * j;
+           A[i][j] = i * j + 1;
        }
    }   
 
+   /*
+   A[0][0] = 4; A[0][1] = 5; A[0][2] = -2;
+   A[1][0] = 7; A[1][1] = -1; A[1][2] = 2;
+   A[2][0] = 3; A[2][1] = 1; A[2][2] = 4;
+   */
+ 
    printMatrix(A, rows, cols);
    std::cout << det(A, ORDER) << "\n";
 

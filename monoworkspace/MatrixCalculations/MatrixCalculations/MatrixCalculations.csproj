@@ -32,6 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="MPI">
+      <HintPath>..\..\..\..\..\..\opt\mpi.net\lib\MPI.dll</HintPath>
+    </Reference>
+    <Reference Include="MPIUtils">
+      <HintPath>..\..\..\..\..\..\opt\mpi.net\lib\MPIUtils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
