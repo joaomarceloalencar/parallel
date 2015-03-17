@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="SlurmMonitor/ResourceManager.cs">
     <Files>
-      <File FileName="SlurmMonitor/Program.cs" Line="15" Column="1" />
-      <File FileName="SlurmMonitor/Job.cs" Line="14" Column="3" />
-      <File FileName="SlurmMonitor/ResourceManager.cs" Line="16" Column="3" />
+      <File FileName="SlurmMonitor/Program.cs" Line="10" Column="4" />
+      <File FileName="SlurmMonitor/Job.cs" Line="21" Column="1" />
+      <File FileName="SlurmMonitor/ResourceManager.cs" Line="42" Column="110" />
+      <File FileName="SlurmMonitor/Node.cs" Line="39" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

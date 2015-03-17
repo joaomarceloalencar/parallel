@@ -11,7 +11,13 @@ namespace SlurmMonitor
 		private int userId;
 		private string[] nodeList;
 
-
+		public int JobId
+		{
+			get 
+			{
+				return jobId;
+			}
+		}
 
 		public Job (string jobName, int jobId, string userName, int userId, string[] nodeList)
 		{
