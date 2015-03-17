@@ -92,7 +92,8 @@ namespace SlurmMonitor
 			List <Node> temp = new List<Node> ();
 			foreach (Node node in nodeList) 
 			{
-				if (node.isActive())
+				node.updateState();
+				if (!node.State.Equals("DOWN*"))
 					temp.Add(node);
 			}
 			nodeList = temp;

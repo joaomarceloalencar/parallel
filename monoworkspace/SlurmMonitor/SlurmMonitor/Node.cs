@@ -8,6 +8,7 @@ namespace SlurmMonitor
 		private string hostname;
 		private double load;
 		private DateTime lastupdate;
+		private string state;
 		private int cores;
 
 		public string Hostname 
@@ -31,6 +32,14 @@ namespace SlurmMonitor
 			get 
 			{
 				return lastupdate;
+			}
+		}
+
+		public string State
+		{
+			get 
+			{
+				return state;
 			}
 		}
 
@@ -101,7 +110,7 @@ namespace SlurmMonitor
 				return false;
 		}
 
-		public bool isActive() {
+		public void updateState() {
 			// Recupera informação do SLURM sobre o estado do nó
 			var proc = new Process {
 				StartInfo = new ProcessStartInfo {
@@ -120,12 +129,9 @@ namespace SlurmMonitor
 
 				if (line.StartsWith ("State")) {
 					char[] separators = {' ', '='};
-					string status = line.Split(separators, 10)[1];
-					if (status.Equals("DOWN*"))
-					    return false;
+					state = line.Split(separators, 10)[1];
 				}
 			}
-			return true;
 		}
 	}
 }
