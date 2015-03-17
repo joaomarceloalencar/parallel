@@ -89,11 +89,13 @@ namespace SlurmMonitor
 				}
 			}
 			// Agora que temos a lista de nós formada, vamos verificar se estão ativos. 
+			List <Node> temp = new List<Node> ();
 			foreach (Node node in nodeList) 
 			{
-				if (!node.isActive())
-					nodeList.Remove(node);
+				if (node.isActive())
+					temp.Add(node);
 			}
+			nodeList = temp;
 
 			fileReader.Close ();
 		}

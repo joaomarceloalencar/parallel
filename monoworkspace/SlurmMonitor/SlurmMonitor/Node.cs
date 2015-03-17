@@ -38,7 +38,7 @@ namespace SlurmMonitor
 		{
 			this.hostname = hostname;
 			this.cores = cores;
-			updateLoad ();
+			// updateLoad ();
 		}
 
 		public void updateLoad ()
