@@ -50,7 +50,11 @@ namespace SlurmMonitor
 			int i;
 			for (i = 0; i < hostname.Length && i < rhs.Hostname.Length && hostname.ToCharArray()[i] == rhs.Hostname.ToCharArray()[i]; i++) {}
 
-			if (hostname.ToCharArray () [i] < rhs.Hostname.ToCharArray () [i]) {
+			if (i == hostname.Length)
+				return -1;
+			else if (i == rhs.Hostname.Length)
+				return 1;
+			else if (hostname.ToCharArray () [i] < rhs.Hostname.ToCharArray () [i]) {
 				if (hostname.Length > rhs.Hostname.Length)
 					return 1;
 				else if (hostname.Length <= rhs.Hostname.Length)
