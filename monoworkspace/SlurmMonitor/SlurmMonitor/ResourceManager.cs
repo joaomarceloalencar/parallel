@@ -114,6 +114,7 @@ namespace SlurmMonitor
 		public void printNodesLoad()
 		{
 			// Imprimir relatório de cargas.
+			nodeList.Sort ();
 			Console.WriteLine ("### LOAD REPORT ###");
 			for (int i = 0; i < nodeList.Count; i++) {
 				if (nodeList [i].isOverloaded())
