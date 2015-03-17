@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace SlurmMonitor
 {
-	public class Node
+	public class Node : IComparable <Node>
 	{
 		private string hostname;
 		private double load;
@@ -39,6 +39,11 @@ namespace SlurmMonitor
 			this.hostname = hostname;
 			this.cores = cores;
 			// updateLoad ();
+		}
+
+		public int CompareTo(Node rhs)
+		{ 
+			return hostname.CompareTo (rhs.Hostname);
 		}
 
 		public void updateLoad ()
