@@ -101,12 +101,13 @@ namespace SlurmMonitor
 			fileReader.Close ();
 		}
 
-		public void updateNodesLoad ()
+		public void updateNodesInfo ()
 		{
 			// Para cada nó disponível, atualizar sua carga.
 			for (int i = 0; i < nodeList.Count; i++) 
 			{
 				nodeList [i].updateLoad ();
+				nodeList [i].updateState ();
 			}
 
 			lastupdate = DateTime.Now;
