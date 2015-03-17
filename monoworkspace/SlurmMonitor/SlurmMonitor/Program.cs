@@ -7,7 +7,8 @@ namespace SlurmMonitor
 		public static void Main (string[] args)
 		{
 			ResourceManager rs = new ResourceManager ();
-
+			rs.updateNodesLoad ();
+			rs.printNodesLoad ();
 		}
 	}
 }

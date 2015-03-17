@@ -6,7 +6,7 @@ namespace SlurmMonitor
 {
 	public class ResourceManager
 	{
-		private Node[] nodeList;
+		private List<Node> nodeList;
 		private DateTime lastupdate;
 
 		public DateTime LastUpdate
@@ -19,44 +19,89 @@ namespace SlurmMonitor
 
 		public ResourceManager ()
 		{
-			nodeList = getNodes ();
+			nodeList = new List<Node> ();
+			retrieveNodes ();
 			lastupdate = DateTime.Now;
 			// updateNodesLoad ();
 		}
 
-		Node[] getNodes ()
+		public void retrieveNodes ()
 		{
 			// Recuperar o nome dos nós que estão ativos e adicionar numa nova lista e depois retorná-la.
 
-			// Retira do arquivo do SLURM os nós configurados
-			var proc = new Process {
-				StartInfo = new ProcessStartInfo {
-					FileName = "/bin/bash",
-					Arguments = "-c \"cat /etc/slurm/slurm.conf | grep NodeName | cut -f2 -d= | cut -f1 -d' ' | sort -n -t[ -k 2,2\"",
-					UseShellExecute = false,
-					RedirectStandardOutput = true,
-					CreateNoWindow = true
-				}
-			};
+			// Limpar a lista anterior
+			nodeList.Clear ();
 
-			// Para cada linha retornada, expandir a expressão dos nós. É importante aqui contar a quantidade de nós. 
-			proc.Start();
-			while (!proc.StandardOutput.EndOfStream) {
-				string line = proc.StandardOutput.ReadLine();
-				Console.WriteLine (line);
+			// Abre o arquivo /etc/slurm/slurm.conf para leitura apenas.
+			System.IO.StreamReader fileReader = new System.IO.StreamReader ("/etc/slurm/slurm.conf");
+
+			// Percorre linha por linha
+			string line;
+			while((line = fileReader.ReadLine()) != null) {
+				// Verifica se as linhas começam por NodeName, caso afirmativo retira apenas a descrição dos nós
+				char[] separators = {' ', '='};
+				if (line.StartsWith ("NodeName")) {
+					string nodesDescription = line.Split( separators, 10)[1];
+					string nodesCores = line.Split(separators,10)[3];
+
+					separators[0] = '[';
+					separators[1] = ']'; 
+					string prefix = nodesDescription.Split(separators,10)[0];
+					string exp = nodesDescription.Split(separators,10)[1];
+
+					// exp deve ser do formato [num1-num2,num3-num4]. Sendo que também pode ser apenas [num] ou [num1-num2] ou [num1,num2,num3]
+					if (!exp.Contains(",") && !exp.Contains("-"))
+						nodeList.Add(new Node(prefix + exp, int.Parse(nodesCores)));
+					else if (!exp.Contains(",") && exp.Contains("-")) {
+						separators[0] = '-';
+						int first = int.Parse(exp.Split(separators, 10)[0]);
+						int second = int.Parse(exp.Split(separators, 10)[1]);
+
+						if (second <= first) {
+							Console.WriteLine("Bad slurm.conf file");
+							return;
+						}
+
+						for (int i = first; i < second + 1; i++)
+							nodeList.Add(new Node(prefix + i, int.Parse(nodesCores)));
+					} else if (exp.Contains(",") && !exp.Contains("-")) {
+						separators[0] = ',';
+						string[] nodesNumbers = exp.Split(separators, 100);
+						for (int i = 0; i < nodesNumbers.Length; i++)
+							nodeList.Add(new Node(prefix + nodesNumbers[i], int.Parse(nodesCores)));
+					} else {
+						separators[0] = ',';
+						string [] exps = exp.Split(separators, 100);
+						foreach (string e in exps) {
+							separators[0] = '-';
+							int first = int.Parse(e.Split(separators, 10)[0]);
+							int second = int.Parse(e.Split(separators, 10)[1]);
+
+							if (second <= first) {
+								Console.WriteLine("Bad slurm.conf file");
+								return;
+							}
+
+							for (int i = first; i < second + 1; i++)
+								nodeList.Add(new Node(prefix + i, int.Parse(nodesCores)));
+						}
+					}
+				}
+			}
+			// Agora que temos a lista de nós formada, vamos verificar se estão ativos. 
+			foreach (Node node in nodeList) 
+			{
+				if (!node.isActive())
+					nodeList.Remove(node);
 			}
 
-			// Verifica se o nó está ativo.
-
-			return new Node[5];
+			fileReader.Close ();
 		}
 
-		void updateNodesLoad ()
+		public void updateNodesLoad ()
 		{
 			// Para cada nó disponível, atualizar sua carga.
-			nodeList = getNodes ();
-
-			for (int i = 0; i < nodeList.Length; i++) 
+			for (int i = 0; i < nodeList.Count; i++) 
 			{
 				nodeList [i].updateLoad ();
 			}
@@ -64,12 +109,11 @@ namespace SlurmMonitor
 			lastupdate = DateTime.Now;
 		}
 
-		void printNodesLoad()
+		public void printNodesLoad()
 		{
 			// Imprimir relatório de cargas.
 			Console.WriteLine ("### LOAD REPORT ###");
-			updateNodesLoad ();
-			for (int i = 0; i < nodeList.Length; i++) {
+			for (int i = 0; i < nodeList.Count; i++) {
 				if (nodeList [i].isOverloaded())
 					Console.WriteLine ("{0}:{1} >>> OVERLOAD", nodeList[i].Hostname, nodeList[i].Load);
 				else 
