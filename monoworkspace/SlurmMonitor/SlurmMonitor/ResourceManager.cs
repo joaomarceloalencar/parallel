@@ -119,9 +119,9 @@ namespace SlurmMonitor
 			Console.WriteLine ("### LOAD REPORT ###");
 			for (int i = 0; i < nodeList.Count; i++) {
 				if (nodeList [i].isOverloaded())
-					Console.WriteLine ("{0}:{1} >>> OVERLOAD", nodeList[i].Hostname, nodeList[i].Load);
+					Console.WriteLine ("{0}:{1:F2} >>> OVERLOAD", nodeList[i].Hostname, nodeList[i].Load);
 				else 
-					Console.WriteLine ("{0}:{1}", nodeList[i].Hostname, nodeList[i].Load);
+					Console.WriteLine ("{0}:{1:F2}", nodeList[i].Hostname, nodeList[i].Load);
 			}
 		}
 	}
