@@ -116,12 +116,28 @@ namespace SlurmMonitor
 		{
 			// Imprimir relatório de cargas.
 			nodeList.Sort ();
+			List<Node> weirdNodes = new List<Node> ();
+			List<Node> overloadedNodes = new List<Node> ();
+
 			Console.WriteLine ("### LOAD REPORT ###");
 			for (int i = 0; i < nodeList.Count; i++) {
-				if (nodeList [i].isOverloaded())
-					Console.WriteLine ("{0}:{1:F2} >>> OVERLOAD", nodeList[i].Hostname, nodeList[i].Load);
-				else 
-					Console.WriteLine ("{0}:{1:F2}", nodeList[i].Hostname, nodeList[i].Load);
+				Console.WriteLine ("{0}:{1:F2}", nodeList[i].Hostname, nodeList[i].Load);
+				if (nodeList [i].isOverloaded ())
+					overloadedNodes.Add (nodeList [i]);
+				else if (!nodeList [i].State.Equals ("IDLE") && nodeList [i].Load < 2.00)
+					weirdNodes.Add (nodeList [i]);
+			}
+
+			Console.WriteLine ("### OVERLOADED NODES ###");
+			overloadedNodes.Sort ();
+			foreach (Node n in overloadedNodes) {
+				Console.WriteLine ("{0}:{1:F2}", n.Hostname, n.Load);
+			}
+
+			Console.WriteLine ("### WEIRD NODES ###");
+			overloadedNodes.Sort ();
+			foreach (Node n in weirdNodes) {
+				Console.WriteLine ("{0}:{1:F2}", n.Hostname, n.Load);
 			}
 		}
 	}
