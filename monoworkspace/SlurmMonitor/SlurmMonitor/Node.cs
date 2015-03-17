@@ -43,9 +43,25 @@ namespace SlurmMonitor
 
 		public int CompareTo(Node rhs)
 		{ 
+
+			if (hostname.Equals (rhs.Hostname))
+				return 0;
+
 			int i;
 			for (i = 0; i < hostname.Length && i < rhs.Hostname.Length && hostname.ToCharArray()[i] != rhs.Hostname.ToCharArray()[i]; i++) {}; 
-			return hostname.Substring(i).CompareTo (rhs.Hostname.Substring (i));
+			if (hostname.ToCharArray () [i] < rhs.Hostname.ToCharArray () [i]) {
+				if (hostname.Length > rhs.Hostname.Length)
+					return 1;
+				else if (hostname.Length <= rhs.Hostname.Length)
+					return -1;
+			} else if (hostname.ToCharArray () [i] > rhs.Hostname.ToCharArray () [i]) {
+				if (hostname.Length >= rhs.Hostname.Length)
+					return 1;
+				else if (hostname.Length < rhs.Hostname.Length)
+					return -1;
+			}
+
+			return 0;
 		}
 
 		public void updateLoad ()
