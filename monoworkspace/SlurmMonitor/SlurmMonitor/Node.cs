@@ -41,6 +41,7 @@ namespace SlurmMonitor
 			// updateLoad ();
 		}
 
+		// Função para comparar um nó a outro pelo nome. Por exemplo, padufc10 está a frente de padufc2.
 		public int CompareTo(Node rhs)
 		{ 
 
@@ -69,6 +70,7 @@ namespace SlurmMonitor
 			return 0;
 		}
 
+		// Atualiza a carga do nó.
 		public void updateLoad ()
 		{
 			// Atualizar a carga do nó
@@ -91,6 +93,7 @@ namespace SlurmMonitor
 			}
 		}
 
+		// Verifica se o nó está sobrecarregado.
 		public bool isOverloaded() 
 		{
 			if (load > cores + 2) 
@@ -99,6 +102,7 @@ namespace SlurmMonitor
 				return false;
 		}
 
+		// Atualiza o estado do nó.
 		public void updateState() {
 			// Recupera informação do SLURM sobre o estado do nó
 			var proc = new Process {

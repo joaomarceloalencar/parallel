@@ -24,9 +24,10 @@ namespace SlurmMonitor
 			updateNodesInfo ();
 		}
 
+		// Recebe como parâmetro uma string no formato prefix[num1-num2,num3-num4,...], na qual o '-' representa uma faixa de valores
+		// Retorna uma lista com as strings prefixnum1,..,prefixnum2, prefixnum3, ... prefixnum4, ...
 		private List<String> nodesNames(string nodesDescription)
 		{ 
-			// nodesDescription é uma string no formato prefix[num1-num2,num3-num4,...], na qual o '-' representa uma faixa de valores
 			List<String> nodesNames = new List<String> ();
 
 			char [] separators = {'[',']'};
@@ -101,6 +102,7 @@ namespace SlurmMonitor
 			fileReader.Close ();
 		}
 
+		// Atualiza o estado e a carga dos nós.
 		public void updateNodesInfo ()
 		{
 			// Verificar a ultima atualização. Para não sobrecarregar, atualizações só são após 15 minutos da última.
@@ -120,6 +122,7 @@ namespace SlurmMonitor
 			lastupdate = DateTime.Now;
 		}
 
+		// Imprime um relatório com a carga dos nós
 		public void printNodesLoad()
 		{
 			// Imprimir relatório de cargas.
