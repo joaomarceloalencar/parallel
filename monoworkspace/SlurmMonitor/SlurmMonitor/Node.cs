@@ -7,7 +7,6 @@ namespace SlurmMonitor
 	{
 		private string hostname;
 		private double load;
-		private DateTime lastupdate;
 		private string state;
 		private int cores;
 
@@ -24,14 +23,6 @@ namespace SlurmMonitor
 			get
 			{ 
 				return load;
-			}
-		}
-
-		public DateTime LastUpdate
-		{
-			get 
-			{
-				return lastupdate;
 			}
 		}
 
@@ -81,8 +72,6 @@ namespace SlurmMonitor
 		public void updateLoad ()
 		{
 			// Atualizar a carga do nó
-			lastupdate = DateTime.Now;
-
 			// Recupera informação do SLURM sobre a carga do nó
 			var proc = new Process {
 				StartInfo = new ProcessStartInfo {
