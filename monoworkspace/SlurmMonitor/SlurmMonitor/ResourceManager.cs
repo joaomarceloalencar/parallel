@@ -21,7 +21,7 @@ namespace SlurmMonitor
 		{
 			nodeList = new List<Node> ();
 			retrieveNodes ();
-			// updateNodesInfo ();
+			updateNodesInfo ();
 		}
 
 		private List<String> nodesNames(string nodesDescription)
@@ -74,10 +74,9 @@ namespace SlurmMonitor
 			return nodesNames;
 		}
 
+		// Recuperar o nome dos nós que estão ativos e adicionar numa nova lista e depois retorná-la.
 		public void retrieveNodes ()
 		{
-			// Recuperar o nome dos nós que estão ativos e adicionar numa nova lista e depois retorná-la.
-
 			// Limpar a lista anterior
 			nodeList.Clear ();
 
