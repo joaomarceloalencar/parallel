@@ -24,17 +24,6 @@ namespace HostTopProcesses
 				}
 			};
 
-			/*
-			var proc = new Process {
-				StartInfo = new ProcessStartInfo {
-					FileName = "ps",
-					Arguments = " -e --sort=-pcpu ",
-					UseShellExecute = false,
-					RedirectStandardOutput = true,
-					CreateNoWindow = true
-				}
-			};
-            */
 			// Return the processes name.
 			proc.Start();
 			while (!proc.StandardOutput.EndOfStream) {
@@ -44,7 +33,7 @@ namespace HostTopProcesses
 				for (int i = 0; !proc.StandardOutput.EndOfStream && (i < nproc); i++) {
 					line = proc.StandardOutput.ReadLine();
 				    char[] separators = {':'};
-					string process = line.Split(separators,10)[2].Split(null)[1];
+					string process = line.Split(separators,10)[3].Split(null)[1];
 					Console.WriteLine (process);
      			}
 				break;
