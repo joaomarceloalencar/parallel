@@ -11,6 +11,7 @@ namespace HostTopProcesses
 			// Second parameter: number of processes
 			String hostname = args [0];
 			int nproc = int.Parse (args [1]);
+			Console.WriteLine ("Host: " + hostname + "  Processes: " + nproc);
 
 			// Retrieve the most consuming processes by CPU
 			var proc = new Process {
@@ -22,18 +23,31 @@ namespace HostTopProcesses
 					CreateNoWindow = true
 				}
 			};
+
+			/*
+			var proc = new Process {
+				StartInfo = new ProcessStartInfo {
+					FileName = "ps",
+					Arguments = " -e --sort=-pcpu ",
+					UseShellExecute = false,
+					RedirectStandardOutput = true,
+					CreateNoWindow = true
+				}
+			};
+            */
 			// Return the processes name.
 			proc.Start();
 			while (!proc.StandardOutput.EndOfStream) {
 				// Discard the first header line
 				string line = proc.StandardOutput.ReadLine();
 
-				for (int i = 0; i < nproc; i++) {
+				for (int i = 0; !proc.StandardOutput.EndOfStream && (i < nproc); i++) {
 					line = proc.StandardOutput.ReadLine();
-				    // char[] separators = {' '};
-					// string process = line.Split(separators,10)[3];
-					Console.WriteLine (line);
+				    char[] separators = {':'};
+					string process = line.Split(separators,10)[2].Split(null)[1];
+					Console.WriteLine (process);
      			}
+				break;
 			}
 		}
 	}
