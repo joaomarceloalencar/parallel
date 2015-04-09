@@ -30,9 +30,9 @@ namespace HostTopProcesses
 
 				for (int i = 0; i < nproc; i++) {
 					line = proc.StandardOutput.ReadLine();
-				    char[] separators = {' '};
-					string process = line.Split(separators,10)[3];
-					Console.WriteLine (process);
+				    // char[] separators = {' '};
+					// string process = line.Split(separators,10)[3];
+					Console.WriteLine (line);
      			}
 			}
 		}
