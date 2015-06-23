@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000002daa6036a855c7bc3d7e31b468df7e1c4a5024f928159b0aed7b676b3bf093a624a39271a8382e7845e7430ebe579aa86c74e11387c63be02d5cbccfe09ef1f07fa9fbbeeec7b2085a1e35d4058556977655c6af5ce36e9cb062bd273b4d46970315f1680dc4d121054a9a8c598111a3544da87e71a232422b9661ffb0d318a8" isAbstract="true" kind="Platform" name="Platform" packagePath="br.ufc.mdcc.common">
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="IPlatform" nArgs="0">
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.common.Platform { &#xA;&#xA;&#x9;public interface BaseIPlatform : IPlatformKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIPlatform.cs" srcType="base" uri="br.ufc.mdcc.common.Platform/bin/1.0.0.0/BaseIPlatform.dll" versionId="1.0.0.0"/>
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.common.Platform { &#xA;&#xA;public interface IPlatform : BaseIPlatform&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IPlatform.cs" srcType="user" uri="br.ufc.mdcc.common.Platform/bin/1.0.0.0/IPlatform.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.common.Platform/bin/1.0.0.0/BaseIPlatform.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="80" x="248" y="124">
+        <color b="0" g="255" r="0"/>
+      </visualDescription>
+    </interface>
+    <unit facet="0" iRef="IPlatform" multiple="true" private="false" replica="0" uRef="platform" visibleInterface="true">
+      <visualDescription h="40" w="80" x="160" y="216"/>
+    </unit>
+  </componentInfo>
+</component:component>

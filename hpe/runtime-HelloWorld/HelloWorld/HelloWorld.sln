@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{1BF805CC-3521-4B52-B10A-19E949690EFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.ufc.mdcc.HelloWorld", "..\br.ufc.mdcc.HelloWorld\br.ufc.mdcc.HelloWorld\br.ufc.mdcc.HelloWorld.csproj", "{AE9A69AD-68D9-45FB-BCED-CB826340BE25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.ufc.mdcc.HelloWorldApp", "..\br.ufc.mdcc.HelloWorldApp\br.ufc.mdcc.HelloWorldApp\br.ufc.mdcc.HelloWorldApp.csproj", "{9C87455D-8D31-4CF4-8568-CB29DD266CE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.ufc.mdcc.HelloWorldAppImpl", "..\br.ufc.mdcc.HelloWorldAppImpl\br.ufc.mdcc.HelloWorldAppImpl\br.ufc.mdcc.HelloWorldAppImpl.csproj", "{B7DD919F-D9DA-4877-B819-E741390B96F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.ufc.mdcc.HelloWorldImpl", "..\br.ufc.mdcc.HelloWorldImpl\br.ufc.mdcc.HelloWorldImpl\br.ufc.mdcc.HelloWorldImpl.csproj", "{8EB6180A-F5DF-4ABB-8629-62C9D3BF56AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "br.ufc.mdcc.common.Platform", "..\br.ufc.mdcc.common.Platform\br.ufc.mdcc.common.Platform\br.ufc.mdcc.common.Platform.csproj", "{A2B8D895-0C85-47F2-975F-445A98AEF592}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BF805CC-3521-4B52-B10A-19E949690EFA}.Debug|x86.ActiveCfg = Debug|x86
+		{1BF805CC-3521-4B52-B10A-19E949690EFA}.Debug|x86.Build.0 = Debug|x86
+		{1BF805CC-3521-4B52-B10A-19E949690EFA}.Release|x86.ActiveCfg = Release|x86
+		{1BF805CC-3521-4B52-B10A-19E949690EFA}.Release|x86.Build.0 = Release|x86
+		{8EB6180A-F5DF-4ABB-8629-62C9D3BF56AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EB6180A-F5DF-4ABB-8629-62C9D3BF56AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{8EB6180A-F5DF-4ABB-8629-62C9D3BF56AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EB6180A-F5DF-4ABB-8629-62C9D3BF56AB}.Release|x86.Build.0 = Release|Any CPU
+		{9C87455D-8D31-4CF4-8568-CB29DD266CE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C87455D-8D31-4CF4-8568-CB29DD266CE8}.Debug|x86.Build.0 = Debug|Any CPU
+		{9C87455D-8D31-4CF4-8568-CB29DD266CE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C87455D-8D31-4CF4-8568-CB29DD266CE8}.Release|x86.Build.0 = Release|Any CPU
+		{A2B8D895-0C85-47F2-975F-445A98AEF592}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2B8D895-0C85-47F2-975F-445A98AEF592}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2B8D895-0C85-47F2-975F-445A98AEF592}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2B8D895-0C85-47F2-975F-445A98AEF592}.Release|x86.Build.0 = Release|Any CPU
+		{AE9A69AD-68D9-45FB-BCED-CB826340BE25}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE9A69AD-68D9-45FB-BCED-CB826340BE25}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE9A69AD-68D9-45FB-BCED-CB826340BE25}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE9A69AD-68D9-45FB-BCED-CB826340BE25}.Release|x86.Build.0 = Release|Any CPU
+		{B7DD919F-D9DA-4877-B819-E741390B96F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B7DD919F-D9DA-4877-B819-E741390B96F0}.Debug|x86.Build.0 = Debug|Any CPU
+		{B7DD919F-D9DA-4877-B819-E741390B96F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{B7DD919F-D9DA-4877-B819-E741390B96F0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = HelloWorld\HelloWorld.csproj
+	EndGlobalSection
+EndGlobal

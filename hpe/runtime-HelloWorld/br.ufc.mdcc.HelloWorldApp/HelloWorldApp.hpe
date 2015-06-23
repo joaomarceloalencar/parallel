@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004963fd4660d8c65730f6ac2d7ae1c31298d124559a9c1082d06d88d5ab8b75c1168e2899153f0c6c96b81f7e3fcb586cec1d99ab0e7a51bd50e16e6084fc7ada3d5f53d65d40ec8ba9508a4d9199f940fc2ee90fb6aae9d2f093bc088b06e2ae540e55454d1f2b4b739a584d729cd91f9703465b9da495e2a6a87acbb3f8a385" isAbstract="true" kind="Application" name="HelloWorldApp" packagePath="br.ufc.mdcc">
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c3b5ea47700819f35ed5eaf8226c1b3f5a5c667b7f87b0fa31e0c4f3fd5b6deeb24d8ffc5483824296f6f36a92f0c64b93d18e2c5b4fdcf83316fc56fb86c7483db2edae2279cae1f6541b8f97f525d5069ace67a7f4cfcddd8f2d54a546073fec9578a7039f5c55ca5dd01ea7c195b605d3102004872da8f6e11b1f8f96c8ee" localRef="helloworld" location="br.ufc.mdcc.HelloWorld/HelloWorld.hpe" multiple="false" name="HelloWorld" package="br.ufc.mdcc" exposed="true">
+      <visualDescription h="60" w="100" x="518" y="391">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="helloworld">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <interface iRef="IHelloWorldApp" nArgs="0">
+      <slice isRef="helloworld">
+        <originRef cRef="helloworld" iRef="IHelloWorld"/>
+        <visualDescription h="10" w="10" x="88" y="25"/>
+      </slice>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldApp { &#xA;&#xA;public interface BaseIHelloWorldApp : IApplicationKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIHelloWorldApp.cs" srcType="base" uri="br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/BaseIHelloWorldApp.dll" versionId="1.0.0.0"/>
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldApp { &#xA;&#xA;public interface IHelloWorldApp : BaseIHelloWorldApp&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IHelloWorldApp.cs" srcType="user" uri="br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/IHelloWorldApp.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/BaseIHelloWorldApp.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="134" x="294" y="138">
+        <color b="128" g="128" r="128"/>
+      </visualDescription>
+      <port name="helloworld">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="helloworld" sRef="helloworld"/>
+      </port>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit facet="0" iRef="IHelloWorldApp" multiple="true" private="false" replica="0" uRef="helloworldapp" visibleInterface="true">
+      <slices cRef="helloworld" inner_replica="0" slice_replica="0" uRef="helloworld" sliceName="helloworld" transitive="false">
+        <visualDescription h="10" w="10" x="88" y="25"/>
+      </slices>
+      <visualDescription h="40" w="122" x="293" y="297"/>
+    </unit>
+  </componentInfo>
+</component:component>

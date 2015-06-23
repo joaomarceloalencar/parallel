@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000061af731dde1e79ad9b8841df7041aaa60fcdf91aa677871b16c663f6eb15e95675f36afc9e9e91ce8fcaf28448a8449c65c762a236a9e6976968b8e43bb4d661ce347da912fbc8858bfafffa6fc97d4f02f792df4a54df8db9903eccd9333e44c3307e30ca2797e1ad044862d50bb53532e81cda22719c8c0a55c42fe20a2ee8" isAbstract="false" kind="Computation" name="HelloWorldImpl" packagePath="br.ufc.mdcc">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c3b5ea47700819f35ed5eaf8226c1b3f5a5c667b7f87b0fa31e0c4f3fd5b6deeb24d8ffc5483824296f6f36a92f0c64b93d18e2c5b4fdcf83316fc56fb86c7483db2edae2279cae1f6541b8f97f525d5069ace67a7f4cfcddd8f2d54a546073fec9578a7039f5c55ca5dd01ea7c195b605d3102004872da8f6e11b1f8f96c8ee" localRef="base" location="br.ufc.mdcc.HelloWorld/HelloWorld.hpe" name="HelloWorld" package="br.ufc.mdcc" version="1.0.0.0">
+        <visualDescription h="60" w="100" x="287" y="321">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="helloworld">
+          <visualDescription h="20" w="20" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="IHelloWorldImpl" nArgs="0">
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using br.ufc.mdcc.HelloWorld;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldImpl { &#xA;&#xA;public abstract class BaseIHelloWorldImpl: Computation, BaseIHelloWorld&#xA;{&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIHelloWorldImpl.cs" srcType="base" uri="br.ufc.mdcc.HelloWorldImpl/bin/1.0.0.0/BaseIHelloWorldImpl.dll" versionId="1.0.0.0">
+          <dependency>br.ufc.mdcc.HelloWorld/bin/1.0.0.0/BaseIHelloWorld.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using br.ufc.mdcc.HelloWorld;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldImpl { &#xA;&#xA;public class IHelloWorldImpl : BaseIHelloWorldImpl, IHelloWorld&#xA;{&#xA;&#xA;public IHelloWorldImpl() { &#xA;&#xA;} &#xA;&#xA;public override void main() { &#xA;&#xA;}&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IHelloWorldImpl.cs" srcType="user" uri="br.ufc.mdcc.HelloWorldImpl/bin/1.0.0.0/IHelloWorldImpl.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.HelloWorldImpl/bin/1.0.0.0/BaseIHelloWorldImpl.dll</dependency>
+          <dependency>br.ufc.mdcc.HelloWorld/bin/1.0.0.0/IHelloWorld.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="137" x="332" y="99">
+        <color b="128" g="128" r="128"/>
+      </visualDescription>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit facet="0" iRef="IHelloWorldImpl" multiple="true" private="false" replica="0" uRef="helloworld" visibleInterface="true">
+      <super cRef="base" uRef="helloworld"/>
+      <visualDescription h="40" w="90" x="203" y="184"/>
+    </unit>
+  </componentInfo>
+</component:component>

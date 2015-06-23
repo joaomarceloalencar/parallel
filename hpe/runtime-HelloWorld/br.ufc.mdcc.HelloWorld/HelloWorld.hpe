@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c3b5ea47700819f35ed5eaf8226c1b3f5a5c667b7f87b0fa31e0c4f3fd5b6deeb24d8ffc5483824296f6f36a92f0c64b93d18e2c5b4fdcf83316fc56fb86c7483db2edae2279cae1f6541b8f97f525d5069ace67a7f4cfcddd8f2d54a546073fec9578a7039f5c55ca5dd01ea7c195b605d3102004872da8f6e11b1f8f96c8ee" isAbstract="true" kind="Computation" name="HelloWorld" packagePath="br.ufc.mdcc">
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="IHelloWorld" nArgs="0">
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorld { &#xA;&#xA;public interface BaseIHelloWorld : IComputationKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIHelloWorld.cs" srcType="base" uri="br.ufc.mdcc.HelloWorld/bin/1.0.0.0/BaseIHelloWorld.dll" versionId="1.0.0.0"/>
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorld { &#xA;&#xA;public interface IHelloWorld : BaseIHelloWorld&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IHelloWorld.cs" srcType="user" uri="br.ufc.mdcc.HelloWorld/bin/1.0.0.0/IHelloWorld.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.HelloWorld/bin/1.0.0.0/BaseIHelloWorld.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="111" x="321" y="197">
+        <color b="128" g="128" r="128"/>
+      </visualDescription>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit facet="0" iRef="IHelloWorld" multiple="true" private="false" replica="0" uRef="helloworld" visibleInterface="true">
+      <visualDescription h="40" w="90" x="321" y="277"/>
+    </unit>
+  </componentInfo>
+</component:component>

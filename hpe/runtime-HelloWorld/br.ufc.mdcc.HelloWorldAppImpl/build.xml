@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/jmhal/hpe/jmhal/cache" default="all" name="HelloWorldAppImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="HelloWorldAppImpl-1.0.0.0">
+    <ifnot targetexists="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0">
+      <mkdir dir="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/HelloWorldAppImpl.snk" optimize="true" output="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/BaseIHelloWorldAppImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/src/1.0.0.0/BaseIHelloWorldAppImpl.cs"/>
+      </sources>
+      <references>
+        <include name="br.ufc.mdcc.HelloWorld/bin/1.0.0.0/IHelloWorld.dll"/>
+        <include name="br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/BaseIHelloWorldApp.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/HelloWorldAppImpl.snk" optimize="true" output="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/src/1.0.0.0/IHelloWorldAppImpl.cs"/>
+      </sources>
+      <references>
+        <include name="/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/BaseIHelloWorldAppImpl.dll"/>
+        <include name="br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/IHelloWorldApp.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/HelloWorldAppImpl.snk" optimize="true" output="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImplMain.exe" target="exe" unsafe="false">
+      <sources>
+        <include name="/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/src/1.0.0.0/IHelloWorldAppImplMain.cs"/>
+      </sources>
+      <references>
+        <include name="/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImpl.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="HelloWorldAppImpl-1.0.0.0" name="all"/>
+</project>

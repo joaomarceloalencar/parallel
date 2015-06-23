@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000df8138d31027431f47fbffe1a5d6f964b129eb65ae632028d100181e2276fdc84120381ac2b44d3cf7610938fa9e80e8c68ae12fb555ccb783b838dbe71b2510a7070562f3ef21472b90e7e07a28f3fd46fc672192eaca705d3aadc884a3694cb6f00f757d2873c32b41c8f4399287c20904e9791b36f735f2fdf1a1a910c998" isAbstract="false" kind="Application" name="HelloWorldAppImpl" packagePath="br.ufc.mdcc">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004963fd4660d8c65730f6ac2d7ae1c31298d124559a9c1082d06d88d5ab8b75c1168e2899153f0c6c96b81f7e3fcb586cec1d99ab0e7a51bd50e16e6084fc7ada3d5f53d65d40ec8ba9508a4d9199f940fc2ee90fb6aae9d2f093bc088b06e2ae540e55454d1f2b4b739a584d729cd91f9703465b9da495e2a6a87acbb3f8a385" localRef="base" location="br.ufc.mdcc.HelloWorldApp/HelloWorldApp.hpe" name="HelloWorldApp" package="br.ufc.mdcc" version="1.0.0.0">
+        <visualDescription h="60" w="100" x="348" y="264">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c3b5ea47700819f35ed5eaf8226c1b3f5a5c667b7f87b0fa31e0c4f3fd5b6deeb24d8ffc5483824296f6f36a92f0c64b93d18e2c5b4fdcf83316fc56fb86c7483db2edae2279cae1f6541b8f97f525d5069ace67a7f4cfcddd8f2d54a546073fec9578a7039f5c55ca5dd01ea7c195b605d3102004872da8f6e11b1f8f96c8ee" localRef="helloworld" location="br.ufc.mdcc.HelloWorld/HelloWorld.hpe" multiple="false" name="HelloWorld" package="br.ufc.mdcc" exposed="false">
+          <visualDescription h="60" w="100" x="518" y="391">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="true" uRef="helloworld">
+            <visualDescription h="20" w="20" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds parallel="true" uRef="helloworldapp">
+          <visualDescription h="20" w="20" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="IHelloWorldAppImpl" nArgs="0">
+      <slice isRef="helloworld">
+        <originRef cRef="helloworld" iRef="IHelloWorld"/>
+        <visualDescription h="10" w="10" x="88" y="25"/>
+      </slice>
+      <sources sourceType="C# Executable" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using br.ufc.mdcc.HelloWorldApp;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldAppImpl { &#xA;&#xA;public abstract class BaseIHelloWorldAppImpl: Application, BaseIHelloWorldApp&#xA;{&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIHelloWorldAppImpl.cs" srcType="base" uri="br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/BaseIHelloWorldAppImpl.dll" versionId="1.0.0.0">
+          <dependency>br.ufc.mdcc.HelloWorld/bin/1.0.0.0/IHelloWorld.dll</dependency>
+          <dependency>br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/BaseIHelloWorldApp.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using br.ufc.mdcc.HelloWorldApp;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldAppImpl { &#xA;&#xA;public class IHelloWorldAppImpl : BaseIHelloWorldAppImpl, IHelloWorldApp&#xA;{&#xA;&#xA;public IHelloWorldAppImpl() { &#xA;&#xA;} &#xA;&#xA;public override void main() { &#xA;&#xA;}&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IHelloWorldAppImpl.cs" srcType="user" uri="br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImpl.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/BaseIHelloWorldAppImpl.dll</dependency>
+          <dependency>br.ufc.mdcc.HelloWorldApp/bin/1.0.0.0/IHelloWorldApp.dll</dependency>
+        </file>
+        <file contents="using DGAC;&#xA;&#xA;namespace br.ufc.mdcc.HelloWorldAppImpl { &#xA;&#xA;&#x9;public class IHelloWorldAppImplMain {&#xA;&#xA;&#x9;&#x9;static void Main(string [] args) {&#xA;&#xA;&#x9;&#x9;&#x9;IHelloWorldAppImpl helloworldapp = new IHelloWorldAppImpl();&#xA;&#xA;&#x9;&#x9;&#x9;BackEnd.DGACInit(&quot;0024000004800000940000000602000000240000525341310004000011000000df8138d31027431f47fbffe1a5d6f964b129eb65ae632028d100181e2276fdc84120381ac2b44d3cf7610938fa9e80e8c68ae12fb555ccb783b838dbe71b2510a7070562f3ef21472b90e7e07a28f3fd46fc672192eaca705d3aadc884a3694cb6f00f757d2873c32b41c8f4399287c20904e9791b36f735f2fdf1a1a910c998&quot;,&quot;helloworldapp&quot;,helloworldapp,args);&#xA;&#x9;&#x9;&#x9;helloworldapp.createSlices();&#xA;&#x9;&#x9;&#x9;helloworldapp.compute();&#xA;&#x9;&#x9;&#x9;BackEnd.DGACFinalize();&#xA;&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="exe" name="IHelloWorldAppImplMain.cs" srcType="main" uri="file:/home/jmhal/workspace/runtime-HelloWorld/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImplMain.exe" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/br.ufc.mdcc.HelloWorldAppImpl/bin/1.0.0.0/IHelloWorldAppImpl.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="167" x="294" y="138">
+        <color b="128" g="128" r="128"/>
+      </visualDescription>
+      <port name="helloworld">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="helloworld" sRef="helloworld"/>
+      </port>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit facet="0" iRef="IHelloWorldAppImpl" multiple="true" private="false" replica="0" uRef="helloworldapp" visibleInterface="true">
+      <super cRef="base" uRef="helloworldapp"/>
+      <visualDescription h="40" w="122" x="123" y="356"/>
+    </unit>
+  </componentInfo>
+</component:component>
