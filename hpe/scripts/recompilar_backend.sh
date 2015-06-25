@@ -19,7 +19,8 @@ EOF
 cd ${BACKEND_DIR};
 gmcs @make_dgac.rsp;
 echo "Informe a senha para instalação do DGACL.dll no GAC";
-sudo gacutil -i bin/DGAC.dll
+sudo gacutil -u DGAC;
+sudo gacutil -i bin/DGAC.dll;
 
 # Compilar Manager
 cd ${BACKEND_DIR};
