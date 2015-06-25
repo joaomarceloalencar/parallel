@@ -33,6 +33,9 @@ gmcs @make_worker.rsp
 cd ${BACKEND_DIR};
 gmcs @make_backendws.rsp 
 
+# Compular o hpe_run
+cd ${BACKEND_DIR};
+gmcs @make_run_app.rsp 
 
 # Limpar diretórios para novo deploy
 rm -rf ${CACHE_DIR}/*;
