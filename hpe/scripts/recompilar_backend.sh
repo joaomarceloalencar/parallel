@@ -35,9 +35,9 @@ gmcs @make_backendws.rsp
 
 
 # Limpar diretórios para novo deploy
-rm -r ${CACHE_DIR}/*;
-rm -r ${WORK_DIR}/*;
-rm -r ${PATH_DIR}/*;
-rm -r ${UNIT_PATH_DIR}/*;
+rm -rf ${CACHE_DIR}/*;
+rm -rf ${WORK_DIR}/*;
+rm -rf ${PATH_DIR}/*;
+rm -rf ${UNIT_PATH_DIR}/*;
 
 
