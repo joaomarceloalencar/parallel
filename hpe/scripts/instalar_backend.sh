@@ -10,7 +10,7 @@ MPI_NET_DIR="/opt/mpi.net";
 MPI_NET_URL="https://github.com/jmhal/MPI.NET";
 MYSQL_NET_DIR="/opt/mysql-connector-net";
 MYSQL_NET_URL="https://github.com/jmhal/parallel/raw/master/hpe/mysql-connector-net-6.9.6-noinstall.zip";
-BACKEND_DIR="/home/jmhal/hash-programming-environment/HPE_BackEnd";
+BACKEND_DIR="/home/jmhal/Hash-Programming-Environment/HPE_BackEnd";
 CACHE_DIR="~${HPE_USER}/hpe/cache";
 WORK_DIR="~${HPE_USER}/hpe/work";
 PATH_DIR="~${HPE_USER}/hpe/path";
@@ -104,6 +104,7 @@ mkdir bin;
 # Compilar DGAC
 sed -i s/heron/${HPE_USER}/ DGAC/DGAC.cs;
 sed -i s/narf@jchf9200/${HPE_USER_PASSWD}/ DGAC/DGAC.cs;
+sed -i s/hash-programming-environment/Hash-Programming-Environment/ DGAC/DGAC.cs;
 sed -i s/configfile/app/ DGAC/DGAC.cs;
 sed -i s/worker.launch.config.9/worker.launch.config/ DGAC/DGAC.cs;
 sed -i s#/usr/lib/mono/MySql.Data#${MYSQL_NET_DIR}/v2.0# make_dgac.rsp;
