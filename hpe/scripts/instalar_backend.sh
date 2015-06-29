@@ -42,7 +42,7 @@ git clone ${MPI_NET_URL} mpi.net
 cd mpi.net;
 LOCAL_DIR=/opt/mpi.net;
 sh autogen.sh;
-./configure –prefix=${MPI_NET_DIR};
+./configure --prefix=${MPI_NET_DIR};
 make;
 make install;
 gacutil -i /opt/mpi.net/lib/MPI.dll;
