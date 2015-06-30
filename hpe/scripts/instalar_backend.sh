@@ -4,6 +4,7 @@
 # Variáveis que precisam ser preenchidas!
 HPE_USER=
 HPE_USER_PASSWD=
+USER_DIR=$(grep ${HPE_USER} /etc/passwd | cut -f6 -d:);
 DATABASE_USER="hashmodel";
 DATABASE_PASSWORD="1566hpe";
 MPI_NET_DIR="/opt/mpi.net";
@@ -36,8 +37,8 @@ grant all privileges on hashmodel.* to '${DATABASE_USER}'@'localhost' identified
 EOF
 
 ## Instalar MPI.NET ##
+cd ${USER_DIR};
 mkdir ${MPI_NET_DIR};
-cd ~${HPE_USER};
 git clone ${MPI_NET_URL} mpi.net
 cd mpi.net;
 LOCAL_DIR=/opt/mpi.net;
@@ -49,6 +50,7 @@ gacutil -i /opt/mpi.net/lib/MPI.dll;
 gacutil -i /opt/mpi.net/lib/MPIUtils.dll;
 
 # Testando MPI e MPI.NET
+cd ${USER_DIR};
 wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/testes/TesteMPI.c;
 mpicc TesteMPI.c -o TesteMPI;
 test=$(mpirun -np 2 ./TesteMPI | grep OK | wc -l);
@@ -72,14 +74,14 @@ fi
 rm -f TesteMPI TesteMPI.c TesteMPINET.*;
 
 ## Instalar o MySQL.NET ##
+cd ${USER_DIR};
 mkdir ${MYSQL_NET_DIR};
-cd ~${HPE_USER};
 wget -q ${MYSQL_NET_URL};
 unzip mysql-connector-net-6.9.6-noinstall.zip -d ${MYSQL_NET_DIR};
 gacutil -i ${MYSQL_NET_DIR}/v2.0/MySql.Data.dll;
 
 # Testando MySQL.NET
-cd ~${HPE_USER};
+cd ${USER_DIR};
 wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/testes/TesteMYSQLNET.cs;
 sed -i s/usuario/${DATABASE_USER}/ TesteMYSQLNET.cs;
 sed -i s/senha/${DATABASE_PASSWORD}/ TesteMYSQLNET.cs;
@@ -94,7 +96,7 @@ fi
 rm -f TesteMYSQLNET.*;
 
 ## Compilar HPE_BackEnd ##
-cd ~${HPE_USER};
+cd ${USER_DIR};
 
 # Baixar o código e configurar os diretórios
 git clone https://github.com/UFC-MDCC-HPC/Hash-Programming-Environment;

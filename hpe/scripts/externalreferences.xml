@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+   <externalreferences:external xmlns:externalreferences="http://www.example.org/externalreferences">
+   <externalreferences:reference description="" destailedName="MPI" path="MPINETDIR/lib/"/>
+</externalreferences:external>

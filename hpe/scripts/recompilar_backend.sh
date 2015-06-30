@@ -39,9 +39,10 @@ cd ${BACKEND_DIR};
 gmcs @make_run_app.rsp 
 
 # Limpar diretórios para novo deploy
-rm -rf ${CACHE_DIR}/*;
-rm -rf ${WORK_DIR}/*;
-rm -rf ${PATH_DIR}/*;
-rm -rf ${UNIT_PATH_DIR}/*;
+echo "Forneça senha para apagar os diretórios.";
+sudo rm -rf ${CACHE_DIR}/*;
+sudo rm -rf ${WORK_DIR}/*;
+sudo rm -rf ${PATH_DIR}/*;
+sudo rm -rf ${UNIT_PATH_DIR}/*;
 
 
