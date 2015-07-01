@@ -93,7 +93,7 @@ else
    echo "MySQL.NET NOT OK";
    exit 1;
 fi
-rm -f TesteMYSQLNET.*;
+rm -f TesteMYSQLNET.* mysql-connector-net-6.9.6-noinstall.zip;
 
 ## Compilar HPE_BackEnd ##
 cd ${USER_DIR};
@@ -137,4 +137,13 @@ mkdir -p ${WORK_DIR};
 mkdir -p ${PATH_DIR};
 mkdir -p ${UNIT_PATH_DIR};
 
-
+# Baixar os arquivos hpe.backend.properties e external references
+cd ${USER_DIR};
+wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/hpe.backend.properties;
+wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/externalreferences.xml;
+sed -i s#WORKDIR#${WORK_DIR}# hpe.backend.properties;
+sed -i s#PATHDIR#${PATH_DIR}# hpe.backend.properties;
+sed -i s#UNITDIT#${UNIT_PATH_DIR}# hpe.backend.properties;
+sed -i s#DGACDIR#${BACKEND_DIR}/bin/# hpe.backend.properties;
+sed -i s##${USER_DIR}# hpe.backend.properties;
+sed -i s#MPINETDIR#${MPI_NET_DIR}# externalreferences.xml;
