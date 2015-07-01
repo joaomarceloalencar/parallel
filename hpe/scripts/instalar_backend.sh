@@ -147,3 +147,15 @@ sed -i s#UNITDIT#${UNIT_PATH_DIR}# hpe.backend.properties;
 sed -i s#DGACDIR#${BACKEND_DIR}/bin/# hpe.backend.properties;
 sed -i s##${USER_DIR}# hpe.backend.properties;
 sed -i s#MPINETDIR#${MPI_NET_DIR}# externalreferences.xml;
+
+# Configurar o arquivo /etc/hpe_nodes
+ncpus=$(grep processor /proc/cpuinfo | wc -l);
+baseport=4865;
+touch /etc/hpe_nodes;
+
+for i in $(seq ${ncpus})
+do
+   port=$(expr $baseport + $i);
+   echo "localhost $port" >> hpe_nodes;
+done;
+
