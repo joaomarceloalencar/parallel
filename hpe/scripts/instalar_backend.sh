@@ -12,10 +12,10 @@ MPI_NET_URL="https://github.com/jmhal/MPI.NET";
 MYSQL_NET_DIR="/opt/mysql-connector-net";
 MYSQL_NET_URL="https://github.com/jmhal/parallel/raw/master/hpe/mysql-connector-net-6.9.6-noinstall.zip";
 BACKEND_DIR="/home/jmhal/Hash-Programming-Environment/HPE_BackEnd";
-CACHE_DIR="~${HPE_USER}/hpe/cache";
-WORK_DIR="~${HPE_USER}/hpe/work";
-PATH_DIR="~${HPE_USER}/hpe/path";
-UNIT_PATH_DIR="~${HPE_USER}/hpe/unit";
+CACHE_DIR="$USER_DIR}/hpe/cache";
+WORK_DIR="${USER_DIR}/hpe/work";
+PATH_DIR="${USER_DIR}/hpe/path";
+UNIT_PATH_DIR="${USER_DIR}/hpe/unit";
 
 ## Instalar os pacotes ##
 export DEBIAN_FRONTEND=noninteractive;
@@ -24,7 +24,7 @@ apt-get update -q;
 # Pacotes básicos de compilação e ambiente Mono
 apt-get install -q -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
 debconf-utils libtool automake subversion git g++ libopenmpi-dev openmpi-common openmpi-bin mono-runtime \
-mono-runtime-common mono-devel mono-xsp2 mono-xsp2 mono-2.0-service mono-4.0-service; 
+mono-runtime-common mono-devel mono-xsp2 mono-xsp4 mono-2.0-service mono-4.0-service; 
 
 # Instalação do mysql-server
 echo mysql-server-5.5 mysql-server/root_password password ${DATABASE_PASSWORD} | debconf-set-selections;
@@ -63,7 +63,7 @@ fi
 
 wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/testes/TesteMPINET.cs; 
 dmcs -warn:0 -r:${MPI_NET_DIR}/lib/MPI.dll TesteMPINET.cs;
-export LD_LIBRARY_PATH=${MPI_NET_DIR};
+export LD_LIBRARY_PATH=${MPI_NET_DIR}/lib;
 test=$(mpirun -np 2 mono ./TesteMPINET.exe | grep OK | wc -l);
 if [ $test -eq 2 ]; then
    echo "MPI.NET OK";
@@ -117,19 +117,19 @@ gacutil -i bin/DGAC.dll;
 # Compilar worker
 sed -i s#/usr/lib/mono/MPI#${MPI_NET_DIR}/lib# make_worker.rsp;
 sed -i s#/usr/lib/mono/DGAC#${BACKEND_DIR}/bin# make_worker.rsp;
-dmcs @make_worker.rsp;
+dmcs -lib:/usr/lib/mono/2.0 @make_worker.rsp;
 
 # Compilar manager
 sed -i s#-r:DGAC#-r:${BACKEND_DIR}/bin/DGAC.dll# make_manager.rsp;
-dmcs @make_manager.rsp;
+dmcs -lib:/usr/lib/mono/2.0 @make_manager.rsp;
 
 # Compilar WS
 sed -i s#/usr/lib/mono/DGAC#${BACKEND_DIR}/bin# make_backendws.rsp;
-dmcs @make_backendws.rsp;
+dmcs -lib:/usr/lib/mono/2.0 @make_backendws.rsp;
 
 # Compilar run_app
 sed -i s#-r:DGAC#-r:${BACKEND_DIR}/bin/DGAC.dll# make_run_app.rsp;
-dmcs @make_run_app.rsp;
+dmcs -lib:/usr/lib/mono/2.0 @make_run_app.rsp;
 
 # Criar diretórios auxiliares 
 mkdir -p ${CACHE_DIR};
@@ -141,21 +141,27 @@ mkdir -p ${UNIT_PATH_DIR};
 cd ${USER_DIR};
 wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/hpe.backend.properties;
 wget -q https://raw.githubusercontent.com/jmhal/parallel/master/hpe/scripts/externalreferences.xml;
+sed -i s#DATABASEUSER#${DATABASE_USER}# hpe.backend.properties;
+sed -i s#DATABASEPASSWORD#${DATABASE_PASSWORD}# hpe.backend.properties;
 sed -i s#WORKDIR#${WORK_DIR}# hpe.backend.properties;
 sed -i s#PATHDIR#${PATH_DIR}# hpe.backend.properties;
-sed -i s#UNITDIT#${UNIT_PATH_DIR}# hpe.backend.properties;
+sed -i s#UNITDIR#${UNIT_PATH_DIR}# hpe.backend.properties;
 sed -i s#DGACDIR#${BACKEND_DIR}/bin/# hpe.backend.properties;
-sed -i s##${USER_DIR}# hpe.backend.properties;
+sed -i s#USERDIR#${USER_DIR}# hpe.backend.properties;
 sed -i s#MPINETDIR#${MPI_NET_DIR}# externalreferences.xml;
 
-# Configurar o arquivo /etc/hpe_nodes
+# Configurar o arquivo /etc/hpe_nodes e a cópia na pasta do usuário
 ncpus=$(grep processor /proc/cpuinfo | wc -l);
-baseport=4865;
+baseport=4864;
 touch /etc/hpe_nodes;
+touch ${USER_DIR}/hpe_nodes;
 
 for i in $(seq ${ncpus})
 do
    port=$(expr $baseport + $i);
-   echo "localhost $port" >> hpe_nodes;
+   echo "localhost $port" >> /etc/hpe_nodes;
+   echo "localhost $port" >> ${USER_DIR}/hpe_nodes
 done;
 
+# Consertar as permissões
+chown -R ${HPE_USER}.${HPE_USER} ${USER_DIR};
