@@ -11,7 +11,7 @@ void vecAddKernel(float *A, float *B, float *C, int n)
 }
 
 __global__
-void vecAddKernel(float *A; float *B, float *C, int dimension)
+void vecAddKernel(float *A, float *B, float *C, int dimension)
 {
    int id = threadIdx.x + blockDim.x * blockIdx.x;
    int i;
