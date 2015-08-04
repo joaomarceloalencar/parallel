@@ -20,8 +20,8 @@
     <CompileTarget>Bin</CompileTarget>
     <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
-    <ExtraCompilerArguments>-fopenmp</ExtraCompilerArguments>
-    <ExtraLinkerArguments>-fopenmp</ExtraLinkerArguments>
+    <ExtraCompilerArguments>-fopenmp -pthread	</ExtraCompilerArguments>
+    <ExtraLinkerArguments>-fopenmp -pthread</ExtraLinkerArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
