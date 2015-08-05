@@ -1,0 +1,7 @@
+Machine: Jupiter
+Input Size: 2000
+Create Files: 0.000
+Multiply Matrices Serial: 58.000
+Multiply Matrices OpenMP: 21.000
+Multiply Matrices Pthreads: 16.000
+
