@@ -67,7 +67,7 @@ void printMatrix(double *A, long rows, long columns)
    filename1 row1 col1 filename2 row2 col2: multiply matrix from filename1 and matrix from filename2
 */
 
-#define SIZE 1000
+#define SIZE 2000
 int main (int argc, char *argv[])
 {
    struct timespec start, end;
@@ -85,21 +85,43 @@ int main (int argc, char *argv[])
    printf( "Create Files: %.3f\n", elapsed);
    
    clock_gettime(CLOCK_MONOTONIC, &start);
-   double *C = matMultSerial(A, SIZE, SIZE, B, SIZE, SIZE);
+   // double *C = matMultSerial(A, SIZE, SIZE, B, SIZE, SIZE);
+   double *CSerial = matMultSerial(A, SIZE, SIZE, B, SIZE, SIZE);
    clock_gettime(CLOCK_MONOTONIC, &end);
    elapsed = ( end.tv_sec - start.tv_sec ) + ( end.tv_nsec - start.tv_nsec ) / 1000000000L;
    printf( "Multiply Matrices Serial: %.3f\n", elapsed);
 
-   free(C);
+   // free(C);
    clock_gettime(CLOCK_MONOTONIC, &start);
-   C = matMultOpenMP(A, SIZE, SIZE, B, SIZE, SIZE);
+   // C = matMultOpenMP(A, SIZE, SIZE, B, SIZE, SIZE);
+   double *COpenMP = matMultOpenMP(A, SIZE, SIZE, B, SIZE, SIZE);
    clock_gettime(CLOCK_MONOTONIC, &end);
    elapsed = ( end.tv_sec - start.tv_sec ) + ( end.tv_nsec - start.tv_nsec ) / 1000000000L;
    printf( "Multiply Matrices OpenMP: %.3f\n", elapsed);
+   
+   // free(C);
+   clock_gettime(CLOCK_MONOTONIC, &start);
+   // C = matMultPthreads(A, SIZE, SIZE, B, SIZE, SIZE);
+   double *CPthreads = matMultPthreads(A, SIZE, SIZE, B, SIZE, SIZE);
+   clock_gettime(CLOCK_MONOTONIC, &end);
+   elapsed = ( end.tv_sec - start.tv_sec ) + ( end.tv_nsec - start.tv_nsec ) / 1000000000L;
+   printf( "Multiply Matrices Pthreads: %.3f\n", elapsed);
+         
+   int i;
+   int equal = 1;
+   for (i = 0; i < SIZE * SIZE; i++)
+      if (CSerial[i] != COpenMP[i] || COpenMP[i] != CPthreads[i])
+         equal = 0;
+   
+   if (!equal)   
+      printf("The matrices are different!!!\n");
          
    free(A);
    free(B);
-   free(C);
+   // free(C);
+   free(CSerial);
+   free(COpenMP);
+   free(CPthreads);
    return 0;
 }
 
