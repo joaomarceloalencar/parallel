@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MatMult/SharedMemory.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MatMult/main.c">
     <Files>
-      <File FileName="MatMult/main.c" Line="4" Column="1" />
-      <File FileName="MatMult/SharedMemory.h" Line="5" Column="9" />
+      <File FileName="MatMult/main.c" Line="90" Column="46" />
+      <File FileName="MatMult/SharedMemory.h" Line="40" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
