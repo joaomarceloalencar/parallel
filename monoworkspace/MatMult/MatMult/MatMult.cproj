@@ -37,5 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedMemory.h" />
+    <None Include="GPU.h" />
+    <None Include="MessagePassing.h" />
   </ItemGroup>
 </Project>
