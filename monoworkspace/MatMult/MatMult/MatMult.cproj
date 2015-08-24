@@ -11,6 +11,11 @@
     </Compiler>
     <Language>C</Language>
     <Target>Bin</Target>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/pkgconfig/cuda-7.0.pc" name="cuda" IsProject="False" />
+      </Packages>
+    </Packages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,5 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedMemory.h" />
+    <None Include="GPU.h" />
   </ItemGroup>
 </Project>
