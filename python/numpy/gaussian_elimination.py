@@ -9,16 +9,20 @@ def gaussian_sequential(a, b):
    """
    x = np.empty(b.size)
    l = np.empty(b.size)
-   for k in range(b.size):
+   for k in range(b.size - 1):
       r = max_col(a, k)
       if (k != r):
          exchange_row(a, b, r, k)
       for i in range(k + 1, b.size):
          l[i] = a[i][k] / a[k][k]
-         for j in range(k + 1, b.size):
+         for j in range(k, b.size):
 	    a[i][j] = a[i][j] - l[i] * a[k][j]
          b[i] = b[i] - l[i] * b[k]
       print a
+
+   if a[a.shape[0] - 1][a.shape[1] - 1] == 0:
+      print "Sorry, you system either has many or none solution."
+      return None
 
    for k in reversed(range(0, b.size)):
       _sum = 0.0
@@ -41,9 +45,9 @@ def max_col(a, k):
       print "k is out of bound"
       return None
 
-   _max = a[0][k]
-   r = 0
-   for row in range(a.shape[0]):
+   _max = a[k][k]
+   r = k
+   for row in range(k, a.shape[0]):
       if a[row][k] > _max:
          _max = a[row][k]
 	 r = row
@@ -76,21 +80,29 @@ def exchange_row(a, b, r, k):
    return
 
 if __name__ == "__main__":
+   """
    A = np.array([2.0, 1, -1, 2, 4, 5, -3, 6, -2, 5, -2, 6, 4, 11, -4, 8]).reshape(4,4)
    b = np.array([5.0, 9, 4, 2])
    
    print A
-   """
-   print b
-   
-   print max_col(A, 0)
-   print max_col(A, 1)
-   print max_col(A, 2)
-   print max_col(A, 3)
-
-   exchange_row(A, b, 0, 3)
-   print A
-   print b
-   """
    x = gaussian_sequential(A, b)
    print x
+   """
+
+   A = np.array([2.0, 1, 3, 2, 6, 8, 6, 8, 18]).reshape(3,3)
+   b = np.array([1.0, 3, 5])
+   
+   print A
+   x = gaussian_sequential(A, b)
+   print x
+
+   A = np.array([3.0, 1, -6,
+                 2, 1, -5, 
+                 6, -3, 3 ]).reshape(3,3)
+
+   b = np.array([-10.0, -8, 0])
+   
+   print A
+   x = gaussian_sequential(A, b)
+   print x
+
