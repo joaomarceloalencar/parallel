@@ -80,15 +80,14 @@ def exchange_row(a, b, r, k):
    return
 
 if __name__ == "__main__":
-   """
    A = np.array([2.0, 1, -1, 2, 4, 5, -3, 6, -2, 5, -2, 6, 4, 11, -4, 8]).reshape(4,4)
    b = np.array([5.0, 9, 4, 2])
    
    print A
    x = gaussian_sequential(A, b)
    print x
-   """
 
+   """
    A = np.array([2.0, 1, 3, 2, 6, 8, 6, 8, 18]).reshape(3,3)
    b = np.array([1.0, 3, 5])
    
@@ -105,4 +104,4 @@ if __name__ == "__main__":
    print A
    x = gaussian_sequential(A, b)
    print x
-
+   """
