@@ -19,6 +19,7 @@ def gaussian_sequential(a, b):
 	    a[i][j] = a[i][j] - l[i] * a[k][j]
          b[i] = b[i] - l[i] * b[k]
       print a
+      print b
 
    if a[a.shape[0] - 1][a.shape[1] - 1] == 0:
       print "Sorry, you system either has many or none solution."
@@ -83,7 +84,10 @@ if __name__ == "__main__":
    A = np.array([2.0, 1, -1, 2, 4, 5, -3, 6, -2, 5, -2, 6, 4, 11, -4, 8]).reshape(4,4)
    b = np.array([5.0, 9, 4, 2])
    
+   print "The Matrix:"
    print A
+   print "The Vector:"
+   print b
    x = gaussian_sequential(A, b)
    print x
 
