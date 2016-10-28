@@ -1,7 +1,6 @@
 #!/usr/bin/python
+# This is an early draft that uses NumPy, but does not support SciPy arrays
 import numpy as np
-import scipy.io as io
-from scipy.sparse import coo_matrix
 
 def gaussian_sequential(a, b):
    """
@@ -16,22 +15,22 @@ def gaussian_sequential(a, b):
       if (k != r):
          exchange_row(a, b, r, k)
       for i in range(k + 1, b.size):
-         l[i] = a[i, k] / a[k, k]
+         l[i] = a[i][k] / a[k][k]
          for j in range(k, b.size):
-	    a[i, j] = a[i, j] - l[i] * a[k, j]
-         b[i, 0] = b[i, 0] - l[i] * b[k, 0]
-#      print a.toarray()
-#      print b
+	    a[i][j] = a[i][j] - l[i] * a[k][j]
+         b[i] = b[i] - l[i] * b[k]
+      print a
+      print b
 
-   if a[a.shape[0] - 1, a.shape[1] - 1] == 0:
+   if a[a.shape[0] - 1][a.shape[1] - 1] == 0:
       print "Sorry, you system either has many or none solution."
       return None
 
    for k in reversed(range(0, b.size)):
       _sum = 0.0
       for j in range(k+1, b.size):
-         _sum = _sum + a[k, j] * x[j]
-      x[k] = 1 / a[k, k] * (b[k,0] - _sum)
+         _sum = _sum + a[k][j] * x[j]
+      x[k] = 1 / a[k][k] * (b[k] - _sum)
 
    return x
 
@@ -48,13 +47,14 @@ def max_col(a, k):
       print "k is out of bound"
       return None
 
-   _max = a[k,k]
+   _max = a[k][k]
    r = k
    for row in range(k, a.shape[0]):
-      if a[row,k] > _max:
-         _max = a[row,k]
+      if a[row][k] > _max:
+         _max = a[row][k]
 	 r = row
    return r
+      
 
 def exchange_row(a, b, r, k):
    """
@@ -70,8 +70,8 @@ def exchange_row(a, b, r, k):
       return None
    
    # Exchange b
-   temp = b[r].copy()
-   b[r] = b[k].copy()
+   temp = b[r]
+   b[r] = b[k]
    b[k] = temp
 
    # Exchange a
@@ -81,37 +81,32 @@ def exchange_row(a, b, r, k):
 
    return
 
-def load_mtx(_file):
-   """
-   Loads a matrix from .mtx format to a numpy array 
-   Input: string _file 
-   Output: a ndarray
-   """
-   matrix_raw = io.mmread(_file)
-   if type(matrix_raw) == coo_matrix:
-      mtx = matrix_raw.tocsr()
-      return mtx
-   return matrix_raw   
-
 if __name__ == "__main__":
-#   print "Pres_Poisson_b.mtx" 
-#   mtx = load_mtx("Pres_Poisson/teste_b.mtx")
-#   print mtx.size
-#   print mtx.ndim
-#   print mtx.shape[1]
-#   print mtx[2,0]
+   A = np.array([2.0, 1, -1, 2, 4, 5, -3, 6, -2, 5, -2, 6, 4, 11, -4, 8]).reshape(4,4)
+   b = np.array([5.0, 9, 4, 2])
    
-   mtx = load_mtx("Pres_Poisson/Pres_Poisson.mtx")
    print "The Matrix:"
-   print mtx.toarray()
-#   print "The Maximum Value at Column 3 is at Row:"
-#   print max_col(mtx, 3)
-#   print "Exchaging rows 1 and 2"
-   mtx_b = load_mtx("Pres_Poisson/Pres_Poisson_b.mtx")
-#   print mtx_b
-#   exchange_row(mtx, mtx_b, 0, 1)
-#   print mtx
-   print mtx_b
-   print "The Solution is:"
-   x = gaussian_sequential(mtx, mtx_b)
+   print A
+   print "The Vector:"
+   print b
+   x = gaussian_sequential(A, b)
    print x
+
+   """
+   A = np.array([2.0, 1, 3, 2, 6, 8, 6, 8, 18]).reshape(3,3)
+   b = np.array([1.0, 3, 5])
+   
+   print A
+   x = gaussian_sequential(A, b)
+   print x
+
+   A = np.array([3.0, 1, -6,
+                 2, 1, -5, 
+                 6, -3, 3 ]).reshape(3,3)
+
+   b = np.array([-10.0, -8, 0])
+   
+   print A
+   x = gaussian_sequential(A, b)
+   print x
+   """
