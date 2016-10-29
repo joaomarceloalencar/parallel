@@ -24,14 +24,14 @@ def max_col_loc(p, rank, a, k):
       return -1
 
    # Still are elements from the column k left
-   _max = a[_row, k]
+   _max = abs(a[_row, k])
    r = _row
    
    # For each row of the matrix, starting from row k
    for row in range(k, a.shape[0]):
       # If this row is mapped to this process
       if row % p == rank:
-         if a[row, k] > _max:
+         if abs(a[row, k]) > _max:
             _max = a[row, k]
             r = row
    return r
