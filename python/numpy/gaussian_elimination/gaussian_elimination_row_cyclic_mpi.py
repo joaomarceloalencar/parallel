@@ -27,7 +27,22 @@ def gaussian_elimination(comm, a, b):
       recvdata = np.zeros(p, dtype='d')
       comm.Allgather([senddata,  MPI.DOUBLE], [recvdata, MPI.DOUBLE])
       node = np.argmax(recvdata)
+      val = recvdata[0]
       print "Rank", rank, "k", k, "r", r, "node", node
+      
+      if k % p == node :
+      # The pivot row and row k are on the same processor
+         if k % p == me :
+            if a[k,k] != val :
+               exchange_row(a, b, r, k)
+            buf = copy_row(a, b, k)
+      else :
+      # The pivot row and row k are owned by diffent processors
+         if k % p == me :
+            buf = copy_row(a, b, k)
+         # row k belongs to this process
+         elif none == me :
+         # the pivot row belongs to this process
 
    return x
 

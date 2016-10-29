@@ -1,4 +1,5 @@
 import scipy.io as io
+import numpy as np
 from scipy.sparse import coo_matrix
 
 def max_col_loc(p, rank, a, k):
@@ -42,12 +43,8 @@ def max_col(a, k):
    input: array a, column k
    output: r the row number
    """
-   if a.ndim != 2:
-      print "You need to provide a 2 dimensional array."
-      return None
-   elif k < 0 or k >= a.shape[0] :
-      print "k is out of bound"
-      return None
+   assert(a.ndim == 2)
+   assert(k >= 0 and k < a.shape[0])
 
    _max = a[k,k]
    r = k
@@ -63,12 +60,9 @@ def exchange_row(a, b, r, k):
    input: array a, array b, row r, row k
    output: none
    """
-   if b.shape[0] != a.shape[1] :
-      print "Incompatible arrays and b."
-      return None   
-   elif (r < 0 or r >= a.shape[1]) or (k < 0 or k >= a.shape[1]):
-      print "r or k out of the bounds of a."
-      return None
+   assert(b.shape[0] == a.shape[1])
+   assert(r >= 0 and r < a.shape[1])
+   assert(k >= 0 and k < a.shape[1])
    
    # Exchange b
    temp = b[r].copy()
@@ -81,6 +75,15 @@ def exchange_row(a, b, r, k):
    a[k] = temp_slice
 
    return
+
+def copy_row(a, b, k):
+   """ 
+   Joins together a row of a with an element of b and returns
+   input: matrix a, array b and row k
+   output: a[k] + b[k]
+   """
+   assert buf.shape[0] = a.shape[0] + b.shape[0]
+   return numpy.append(a[k], b[k]) 
 
 def load_mtx(_file):
    """
