@@ -39,10 +39,14 @@ def gaussian_elimination(comm, a, b):
       else :
       # The pivot row and row k are owned by diffent processors
          if k % p == me :
+            # row k belongs to this process
             buf = copy_row(a, b, k)
-         # row k belongs to this process
+            comm.Send([buf, MPI.DOUBLE], dest = node, tag = 77)
          elif none == me :
-         # the pivot row belongs to this process
+            # the pivot row belongs to this process
+            comm.Recv([buf, MPI.DOUBLE], source = MPI.ANY_SOURCE, tag = 77)
+	    copy_exchange_row(a, b, r, buf, k)
+
 
    return x
 

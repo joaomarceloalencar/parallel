@@ -8,12 +8,8 @@ def max_col_loc(p, rank, a, k):
    input: number of processesp, the process rank, matrix a, integer k
    output: integer r
    """
-   if a.ndim != 2:
-      print "You need to provide a 2 dimensional array."
-      return None
-   elif k < 0 or k >= a.shape[0] :
-      print "k is out of bound"
-      return None
+   assert(a.ndim == 2)
+   assert(k >= 0 and k < a.shape[0])
 
    # Find out which is the first row greater than k assigned to the process
    _row = k
@@ -84,6 +80,23 @@ def copy_row(a, b, k):
    """
    assert buf.shape[0] = a.shape[0] + b.shape[0]
    return numpy.append(a[k], b[k]) 
+
+def copy_exchange_row(a, b, r, buf, k);
+   """
+   Exchanges the row r and the buffer buf. I don't know if I need k
+   input: matrix a, vector b, index r, a vector buf and another index k
+   output: none
+   """
+   # Exchange buf and row r and updating row k
+   temp = buf.copy()
+   for i in range(a.shape[0]):
+      buf[i] = a[r,i]
+      a[k,i] = a[r,i]
+      a[r,i] = temp[i]
+   buf[a.shape[0] + 1] = b[r]
+   b[k] = b[r]
+   b[r] = temp[a.shape[0] + 1]
+   return
 
 def load_mtx(_file):
    """
