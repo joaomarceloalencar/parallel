@@ -98,6 +98,17 @@ def copy_exchange_row(a, b, r, buf, k);
    b[r] = temp[a.shape[0] + 1]
    return
 
+def copy_back_row(a, b, buf, k):
+   """
+   The content of buf is copied into row k 
+   input: matrix a, array b, array buffer, index k
+   output: none
+   """
+   for i in range(a.shape[0]):
+      a[k,i] = buf[i]
+   b[k] = buf[a.shape[0] + 1)   
+   return
+
 def load_mtx(_file):
    """
    Loads a matrix from .mtx format to a numpy array 

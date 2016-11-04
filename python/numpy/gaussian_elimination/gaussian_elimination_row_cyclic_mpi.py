@@ -28,7 +28,7 @@ def gaussian_elimination(comm, a, b):
       comm.Allgather([senddata,  MPI.DOUBLE], [recvdata, MPI.DOUBLE])
       node = np.argmax(recvdata)
       val = recvdata[0]
-      print "Rank", rank, "k", k, "r", r, "node", node
+      # print "Rank", rank, "k", k, "r", r, "node", node
       
       if k % p == node :
       # The pivot row and row k are on the same processor
@@ -42,12 +42,33 @@ def gaussian_elimination(comm, a, b):
             # row k belongs to this process
             buf = copy_row(a, b, k)
             comm.Send([buf, MPI.DOUBLE], dest = node, tag = 77)
-         elif none == me :
+         elif node == me :
             # the pivot row belongs to this process
             comm.Recv([buf, MPI.DOUBLE], source = MPI.ANY_SOURCE, tag = 77)
 	    copy_exchange_row(a, b, r, buf, k)
-
-
+      # Broadcast the pivot row to everyone	    
+      comm.Bcast(buf, root=node)
+      # If I had row k, let me replace that for the pivot row
+      if ((k % p != node) and (k % p == me)):
+         copy_back_row(a, b, buf, k) 
+      # Let's jump to the current row this process should take care	 
+      row = k + 1
+      while (row % p != me):
+         row++
+      # Update my rows accordingly the pivot row	 
+      for i in range(row, b.size, p):
+         l[i] = a[i,k] / buf[k]
+	 for j in range(k+1, b.size):
+	    a[i,j] = a[i,j] - l[i] * buf[j]
+	 b[i] = b[i] - l[i] * buf[n]
+    # Not that we reached A[k], let's do the backward substitution
+    for k in reversed(range(n, 0)):
+       if (k % p == me):
+          _sum = 0.0
+	  for j in range(k+1, n):
+	     _sum = _sum + a[k,j] * x[j]
+	  x[k] = 1 / a[k,k] * (b[k] - _sum)
+       comm.Bcast(x[k], root=k % p)
    return x
 
 if __name__ == "__main__" :
