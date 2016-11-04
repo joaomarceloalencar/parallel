@@ -78,10 +78,10 @@ def copy_row(a, b, k):
    input: matrix a, array b and row k
    output: a[k] + b[k]
    """
-   assert buf.shape[0] = a.shape[0] + b.shape[0]
-   return numpy.append(a[k], b[k]) 
+   assert (a.shape[0] == b.shape[0])
+   return np.append(a[k].toarray(), b[k]) 
 
-def copy_exchange_row(a, b, r, buf, k);
+def copy_exchange_row(a, b, r, buf, k):
    """
    Exchanges the row r and the buffer buf. I don't know if I need k
    input: matrix a, vector b, index r, a vector buf and another index k
@@ -93,9 +93,9 @@ def copy_exchange_row(a, b, r, buf, k);
       buf[i] = a[r,i]
       a[k,i] = a[r,i]
       a[r,i] = temp[i]
-   buf[a.shape[0] + 1] = b[r]
+   buf[a.shape[0]] = b[r]
    b[k] = b[r]
-   b[r] = temp[a.shape[0] + 1]
+   b[r] = temp[a.shape[0]]
    return
 
 def copy_back_row(a, b, buf, k):
@@ -106,7 +106,7 @@ def copy_back_row(a, b, buf, k):
    """
    for i in range(a.shape[0]):
       a[k,i] = buf[i]
-   b[k] = buf[a.shape[0] + 1)   
+   b[k] = buf[a.shape[0]]   
    return
 
 def load_mtx(_file):

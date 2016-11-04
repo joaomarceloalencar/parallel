@@ -21,6 +21,7 @@ def gaussian_sequential(a, b):
          for j in range(k, b.size):
 	    a[i, j] = a[i, j] - l[i] * a[k, j]
          b[i, 0] = b[i, 0] - l[i] * b[k, 0]
+      # print a.toarray()   
 
    if a[a.shape[0] - 1, a.shape[1] - 1] == 0:
       print "Sorry, you system either has many or none solution."
@@ -93,24 +94,23 @@ def load_mtx(_file):
    return matrix_raw   
 
 if __name__ == "__main__":
-#   print "Pres_Poisson_b.mtx" 
-#   mtx = load_mtx("Pres_Poisson/teste_b.mtx")
-#   print mtx.size
-#   print mtx.ndim
-#   print mtx.shape[1]
-#   print mtx[2,0]
-   
+#   mtx = load_mtx("data/teste/teste.mtx")
+#   mtx_b = load_mtx("data/teste/teste_b.mtx")
    mtx = load_mtx("data/dezpordez.mtx")
+   mtx_b = load_mtx("data/dezpordez_b.mtx")
+   mtx_orig = mtx.copy()
    print "The Matrix:"
    print mtx.toarray()
-#   print "The Maximum Value at Column 3 is at Row:"
-#   print max_col(mtx, 3)
-#   print "Exchaging rows 1 and 2"
-   mtx_b = load_mtx("data/dezpordez_b.mtx")
-#   print mtx_b
-#   exchange_row(mtx, mtx_b, 0, 1)
-#   print mtx
    print mtx_b
    print "The Solution is:"
    x = gaussian_sequential(mtx, mtx_b)
    print x
+   # Let's verify the solution
+  
+   print "Applying it to the original equations:"
+   result = np.zeros(mtx_b.size)
+   for i in range(0, mtx_b.size):
+      for j in range(0, mtx_b.size):
+         result[i] = result[i] + mtx_orig[i,j] * x[j]
+   print result     
+  
