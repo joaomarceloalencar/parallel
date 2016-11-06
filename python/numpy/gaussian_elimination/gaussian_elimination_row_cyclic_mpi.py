@@ -15,6 +15,7 @@ def gaussian_elimination(comm, a, b):
 
    # Create each matrix A[k]
    for k in range(b.size - 1):
+      print "Run: ", k, " Process: ", me
       r = max_col_loc(p, me, a, k)
       #print "Rodada: ", k, "Processo: ", me, "Maior coluna:", r
 
@@ -70,8 +71,8 @@ def gaussian_elimination(comm, a, b):
 	 for j in range(k, b.size):
 	    a[i,j] = a[i,j] - l[i] * buf[j]
 	 b[i] = b[i] - l[i] * buf[b.size]
-      print "Rodada: ", k, "Processo: ", me, "A apos multiplicacao:", np.around(a.toarray(), decimals=2)
-      print "Rodada: ", k, "Processo: ", me, "B apos multiplicacao:", np.around(b, decimals=2)
+      #print "Rodada: ", k, "Processo: ", me, "A apos multiplicacao:", np.around(a.toarray(), decimals=2)
+      #print "Rodada: ", k, "Processo: ", me, "B apos multiplicacao:", np.around(b, decimals=2)
    
    # Not that we reached A[k], let's do the backward substitution
    for k in reversed(range(0, b.size)):
@@ -79,12 +80,14 @@ def gaussian_elimination(comm, a, b):
          _sum = 0.0
          for j in range(k+1, b.size):
             _sum = _sum + a[k,j] * x[j]
-            x[k] = 1 / a[k,k] * (b[k] - _sum)
+         x[k] = 1 / a[k,k] * (b[k] - _sum)
+         #print "Process Before Broadcast ", me, "k ", k, "x[k] ", x[k], "_sum ", _sum
       # Let's share the new value of x[k] to everyone
-      value = np.arange(1)
+      value = np.arange(1, dtype = 'd')
       value[0] = x[k]
       comm.Bcast(value, root = k % p)
       x[k] = value[0]
+      #print "Process After Broadcast", me, "k ", k, "x[k] ", x[k]
    return x
 
 if __name__ == "__main__" :
@@ -96,10 +99,13 @@ if __name__ == "__main__" :
    print "Starting process " + str(rank) + " of " + str(size)
 
    # Load the Matrices
-   matrix_file = "data/dezpordez.mtx"
-   matrix_file_b = "data/dezpordez_b.mtx"
+   #matrix_file = "data/dezpordez.mtx"
+   #matrix_file_b = "data/dezpordez_b.mtx"
+   matrix_file = "data/Pres_Poisson/Pres_Poisson.mtx"
+   matrix_file_b = "data/Pres_Poisson/Pres_Poisson_b.mtx"
    matrix = load_mtx(matrix_file)
    matrix_b = load_mtx(matrix_file_b)
+   matrix_orig = matrix.copy()
 
    if rank == 0:
       print matrix.toarray()
@@ -110,3 +116,10 @@ if __name__ == "__main__" :
 
    if rank == 0:
       print x
+      print "Applying it to the original equations:"
+      result = np.zeros(matrix_b.size)
+      for i in range(0, matrix_b.size):
+         for j in range(0, matrix_b.size):
+            result[i] = result[i] + matrix_orig[i,j] * x[j]
+      print result     
+ 
