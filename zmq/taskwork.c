@@ -5,9 +5,17 @@
 //  Sends results to sink via that socket
 
 #include "zhelpers.h"
+#include <mpi.h>
 
-int main (void)
+int main (int argc, char *argv[])
 {
+    //  MPI
+    int rank, size;
+
+    MPI_Init (&argc, &argv);	/* starts MPI */
+    MPI_Comm_rank (MPI_COMM_WORLD, &rank);	/* get current process id */
+    MPI_Comm_size (MPI_COMM_WORLD, &size);	/* get number of processes */
+   
     //  Socket to receive messages on
     void *context = zmq_ctx_new ();
     void *receiver = zmq_socket (context, ZMQ_PULL);
@@ -17,18 +25,22 @@ int main (void)
     void *sender = zmq_socket (context, ZMQ_PUSH);
     zmq_connect (sender, "tcp://localhost:5558");
 
-    //  Process tasks forever
     while (1) {
-        char *string = s_recv (receiver);
-        printf ("%s.", string);     //  Show progress
-        fflush (stdout);
-        s_sleep (atoi (string));    //  Do the work
-        free (string);
-        s_send (sender, "");        //  Send results to sink
+       char *string = s_recv (receiver);
+       char buffer[100];
+       printf ("Rank %d Receive %s.\n", rank, string); 
+       fflush (stdout);
+       sprintf(buffer, "From Rank %d Receive %s\n", rank, string);
+       s_send(sender, buffer);
+       free (string);
     }
+    
     zmq_close (receiver);
     zmq_close (sender);
     zmq_ctx_destroy (context);
+
+    MPI_Finalize();
+
     return 0;
 }
 

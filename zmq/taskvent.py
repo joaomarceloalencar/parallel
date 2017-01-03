@@ -9,12 +9,6 @@ import zmq
 import random
 import time
 
-try:
-    raw_input
-except NameError:
-    # Python 3
-    raw_input = input
-
 context = zmq.Context()
 
 # Socket to send messages on
@@ -33,19 +27,11 @@ print("Sending tasks to workers...")
 sink.send(b'0')
 
 # Initialize random number generator
-random.seed()
 
-# Send 100 tasks
-total_msec = 0
-for task_nbr in range(100):
-
-    # Random workload from 1 to 100 msecs
-    workload = random.randint(1, 100)
-    total_msec += workload
-
-    sender.send_string(u'%i' % workload)
-
-print("Total expected cost: %s msec" % total_msec)
+sender.send_string(u'0')
+sender.send_string(u'1')
+sender.send_string(u'2')
+sender.send_string(u'3')
 
 # Give 0MQ time to deliver
 time.sleep(1)
