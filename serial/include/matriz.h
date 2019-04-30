@@ -13,6 +13,9 @@ typedef struct Matriz {
 // Função para carregar a matriz.
 Matriz lerMatriz(FILE *arquivoMatriz);
 
+// Função para imprimir a matriz.
+void imprimirMatriz(Matriz matriz);
+
 // Função para liberar a matriz.
 void liberarMatriz(Matriz m);
 
