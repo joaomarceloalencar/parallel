@@ -12,6 +12,8 @@ matriz: $(SRCDIR)/matriz.c $(INCLUDEDIR)/matriz.h
 main: matriz
 	gcc -I$(INCLUDEDIR) -c $(SRCDIR)/main.c -o $(BINDIR)/main.o
 	gcc $(BINDIR)/main.o -L$(LIBDIR) -lmatriz -o $(BINDIR)/matmultvetor
+	gcc $(SRCDIR)/comparaMatrizes.c -o $(BINDIR)/comparaMatrizes
+	gcc $(SRCDIR)/criarMatriz.c -o $(BINDIR)/criarMatriz
 
 clean:
 	rm $(LIBDIR)/*.so
