@@ -21,17 +21,11 @@ int main(int argc, char *argv[]) {
    }
 
    Matriz matriz = lerMatriz(arquivoMatriz);
-   for (int i = 0; i < matriz.n; i++) {
-      for (int j = 0; j < matriz.m; j++) 
-         printf("%0.2f:", matriz.data[i * matriz.m + j]);
-      printf("\n");
-   }
+   imprimirMatriz(matriz);
 
    Matriz vetor = lerMatriz(arquivoVetor);
-   for (int i = 0; i < vetor.m; i++)
-      printf("%0.2f:", vetor.data[i]);
-   printf("\n");
-
+   imprimirMatriz(vetor);
+   
    // Realiza a multiplicação.
    Matriz resultado;
    resultado.n = matriz.n;
@@ -46,11 +40,12 @@ int main(int argc, char *argv[]) {
    FILE *arquivoResultado = fopen(nomeArquivoResultado, "w");
    fprintf(arquivoResultado, "%d\n", resultado.n);
    fprintf(arquivoResultado, "%d\n", resultado.m);
-   int i;
-   for(i = 0; i < resultado.m - 1; i++)
-      fprintf(arquivoResultado, "%0.2f:", resultado.data[i]);
-   fprintf(arquivoResultado, "%0.2f", resultado.data[i]);
-   fprintf(arquivoResultado, "\n");
+   int i, j;
+   for (i = 0; i < resultado.n; i++) {
+      for(j = 0; j < resultado.m - 1; j++)
+         fprintf(arquivoResultado, "%0.2f:", resultado.data[i * resultado.m + j]);
+      fprintf(arquivoResultado, "%0.2f\n", resultado.data[i * resultado.m + j]);
+   }
  
    free(matriz.data);
    free(vetor.data);

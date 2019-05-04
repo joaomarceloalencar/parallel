@@ -57,6 +57,15 @@ Matriz lerMatriz(FILE *arquivoMatriz){
    return m;
 }
 
+void imprimirMatriz(Matriz matriz) {
+   for (int i = 0; i < matriz.n; i++) {
+      int j;  
+      for (j = 0; j < matriz.m -1; j++) 
+         printf("%0.2f:", matriz.data[i * matriz.m + j]);
+      printf("%0.2f\n", matriz.data[i * matriz.m + j]);
+   }
+}
+
 // Libera a memória alocada para a matriz.
 void liberarMatriz(Matriz m) {
    free(m.data);
