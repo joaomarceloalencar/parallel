@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
    for (i = 1; i < n; i++) {
       x += h;
-      // printf("%0.5f\n", x);
+      //printf("%0.5f\n", x);
       integral += f(x);
    }
    integral *= h;

@@ -9,6 +9,16 @@ double f(double x) {
    return return_val;
 }
 
+double xValue(double a, double h, int rank, int n, int p){
+   if (rank == 0) {
+      return a ;
+   }
+   int it = n / p - 1;
+   for (int i = 1; i < rank; i++)
+      it += n/p;
+   return a + it * h;
+}
+
 int main(int argc, char *argv[]) {
    // Valor da integral
    double integralGlobal, integralLocal; 
@@ -45,15 +55,18 @@ int main(int argc, char *argv[]) {
   
 
    // O valor de x muda de acordo com o rank do processo.
-   x = a + rank * (n / numeroDeProcessos - 1) * h;
+   // x = a + rank * (n / numeroDeProcessos - 1) * h;
 
    // Cada processo calcula n / numeroDeProcessos trapézios.
    // Considere n divisível por numeroDeProcessos.
-   if (rank == 0) 
+   if (rank == 0) { 
       i = 1;
-   else
+   }
+   else {
       i = 0;
-   for ( ;i < n / numeroDeProcessos; i++) {
+   }
+   x = xValue(a, h, rank, n, numeroDeProcessos);
+   for (; i < n / numeroDeProcessos; i++) {
       x += h;
       // printf("rank:%d x:%.5f\n", rank, x);
       integralLocal += f(x);
