@@ -40,14 +40,18 @@ int main(int argc, char *argv[]) {
    resultado.n = matrizA.n;
    resultado.m = matrizB.m;
    resultado.data = (double *) malloc(resultado.m * resultado.n * sizeof(double));
-   for (i = 0; i < resultado.n * resultado.m; i++) resultado.data[i] = 0.0;
+#pragma omp parallel shared(matrizA, matrizB, resultado) private(i, j, k) 
+   {  
+#pragma omp for nowait
+      for (i = 0; i < resultado.n * resultado.m; i++) resultado.data[i] = 0.0;
 
-#pragma omp parallel for shared(matrizA, matrizB, resultado) private(i, j, k)
-   for (i = 0; i < matrizA.n; i++) {
+#pragma omp for nowait
+      for (i = 0; i < matrizA.n; i++) {
       // printf("Thread %d, iteração %d.\n", omp_get_thread_num(), i);
-      for (j = 0; j < matrizB.m; j++)
-         for (k = 0; k < matrizB.n; k++)
-            resultado.data[i * matrizB.m + j] += matrizA.data[i * matrizA.m + k] * matrizB.data[k * matrizB.m + j];	      
+         for (j = 0; j < matrizB.m; j++)
+            for (k = 0; k < matrizB.n; k++)
+               resultado.data[i * matrizB.m + j] += matrizA.data[i * matrizA.m + k] * matrizB.data[k * matrizB.m + j];	      
+      }
    }
    // Guarda o resultado no arquivo.
    FILE *arquivoMatrizResultado = fopen(nomeArquivoMatrizResultado, "w");
