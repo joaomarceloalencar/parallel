@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 #include "matriz.h"
 
 int main(int argc, char *argv[]) {
+   // Controle dos laços
+   int i, j,  k;
+
    // Nome do arquivo com a matriz A.	
    char *nomeArquivoMatrizA = argv[1];
 
@@ -21,10 +25,10 @@ int main(int argc, char *argv[]) {
    }
 
    Matriz matrizA = lerMatriz(arquivoMatrizA);
-   imprimirMatriz(matrizA);
+   // imprimirMatriz(matrizA);
 
    Matriz matrizB = lerMatriz(arquivoMatrizB);
-   imprimirMatriz(matrizA);
+   // imprimirMatriz(matrizA);
 
    if (matrizA.m != matrizB.n) {
       printf("Dimensões incompatíveis.\n");
@@ -35,22 +39,24 @@ int main(int argc, char *argv[]) {
    Matriz resultado;
    resultado.n = matrizA.n;
    resultado.m = matrizB.m;
-   resultado.data = (float *) malloc(resultado.m * resultado.n * sizeof(float));
-   for (int i = 0; i < resultado.n * resultado.m; i++) resultado.data[i] = 0.0;
-   for (int i = 0; i < matrizA.n; i++)
-      for (int j = 0; j < matrizB.m; j++)
-         for (int k = 0; k < matrizB.n; k++)
-            resultado.data[i * matrizB.m + j] += matrizA.data[i * matrizA.m + k] * matrizB.data[k * matrizB.m + j];	      
+   resultado.data = (double *) malloc(resultado.m * resultado.n * sizeof(double));
+   for (i = 0; i < resultado.n * resultado.m; i++) resultado.data[i] = 0.0;
 
+#pragma omp parallel for shared(matrizA, matrizB, resultado) private(i, j, k)
+   for (i = 0; i < matrizA.n; i++) {
+      // printf("Thread %d, iteração %d.\n", omp_get_thread_num(), i);
+      for (j = 0; j < matrizB.m; j++)
+         for (k = 0; k < matrizB.n; k++)
+            resultado.data[i * matrizB.m + j] += matrizA.data[i * matrizA.m + k] * matrizB.data[k * matrizB.m + j];	      
+   }
    // Guarda o resultado no arquivo.
    FILE *arquivoMatrizResultado = fopen(nomeArquivoMatrizResultado, "w");
    fprintf(arquivoMatrizResultado, "%d\n", resultado.n);
    fprintf(arquivoMatrizResultado, "%d\n", resultado.m);
-   int i, j;
    for (i = 0; i < resultado.n; i++) {
       for(j = 0; j < resultado.m - 1; j++)
-         fprintf(arquivoMatrizResultado, "%0.2f:", resultado.data[i * resultado.m + j]);
-      fprintf(arquivoMatrizResultado, "%0.2f\n", resultado.data[i * resultado.m + j]);
+         fprintf(arquivoMatrizResultado, "%0.4f:", resultado.data[i * resultado.m + j]);
+      fprintf(arquivoMatrizResultado, "%0.4f\n", resultado.data[i * resultado.m + j]);
    }
  
    free(matrizA.data);
