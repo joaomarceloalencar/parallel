@@ -7,7 +7,7 @@
 typedef struct Matriz { 
    int n;
    int m;
-   float *data;
+   double *data;
 } Matriz;
 
 // Função para carregar a matriz.

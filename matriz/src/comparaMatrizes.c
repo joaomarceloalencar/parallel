@@ -84,8 +84,11 @@ int main(int argc, char *argv[]) {
       
       // Se algum elemento for diferente, as matrizes são diferentes.
       for (int i = 0; i < linhasUm * colunasUm; ++i)
-         if (elementosMatrizUm[i] != elementosMatrizDois[i])
-	    status = 1;
+         if (elementosMatrizUm[i] != elementosMatrizDois[i]) {
+            printf("Elemento %d da primeira matriz: %.2f\n", i, elementosMatrizUm[i]);
+            printf("Elemento %d da segunda matriz: %.2f\n", i, elementosMatrizDois[i]);
+            status = 1;
+         }
    }
 
    // Fecha arquivos.

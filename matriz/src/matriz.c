@@ -24,7 +24,7 @@ Matriz lerMatriz(FILE *arquivoMatriz){
    int linhas = atoi(linhasString);
    fscanf(arquivoMatriz, "%[^\n]%*c", colunasString);
    int colunas = atoi(colunasString);
-   printf("Lendo matriz com %d linhas e %d colunas\n", linhas, colunas);
+   // printf("Lendo matriz com %d linhas e %d colunas\n", linhas, colunas);
    if (linhas == 0 || colunas == 0) {
       printf("Dimensões de matriz inválidas.\n");
       Matriz m;
@@ -37,7 +37,7 @@ Matriz lerMatriz(FILE *arquivoMatriz){
    Matriz m;
    m.n = linhas;
    m.m = colunas;
-   m.data = (float *) malloc(linhas * colunas * sizeof(float));
+   m.data = (double *) malloc(linhas * colunas * sizeof(double));
    
    // Fazer a leitura da Matriz
    int posicao = 0;
