@@ -14,7 +14,7 @@ void adicionaFinalString(char *str, char c, int limite){
    return;
 }
 
-void lerElementos(FILE *matriz, float *elementos) {
+void lerElementos(FILE *matriz, double *elementos) {
    char ch;
    // 100 é o limite para a representação em string de um número.
    char str[100] = "";
@@ -68,15 +68,15 @@ int main(int argc, char *argv[]) {
    fgetc(matrizUm);
    fgetc(matrizDois);
 
-   float *elementosMatrizUm;
-   float *elementosMatrizDois;
+   double *elementosMatrizUm;
+   double *elementosMatrizDois;
 
    // Ler e compara cada elemento das matriz.
    if (status == 0) {
 
       // Aloca espaço para as matrizes em um vetor linear.
-      elementosMatrizUm = malloc(linhasUm * colunasUm * sizeof(float));
-      elementosMatrizDois = malloc(linhasDois * colunasDois * sizeof(float));
+      elementosMatrizUm = malloc(linhasUm * colunasUm * sizeof(double));
+      elementosMatrizDois = malloc(linhasDois * colunasDois * sizeof(double));
 
       // Carrega os elementos a partir dos arquivos.
       lerElementos(matrizUm, elementosMatrizUm);
