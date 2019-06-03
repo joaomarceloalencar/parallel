@@ -20,9 +20,9 @@ Matriz lerMatriz(FILE *arquivoMatriz){
    // Recupera as dimensões da Matriz
    char linhasString[10];
    char colunasString[10];
-   fscanf(arquivoMatriz, "%[^\n]%*c", linhasString);
+   int b = fscanf(arquivoMatriz, "%[^\n]%*c", linhasString);
    int linhas = atoi(linhasString);
-   fscanf(arquivoMatriz, "%[^\n]%*c", colunasString);
+   b = fscanf(arquivoMatriz, "%[^\n]%*c", colunasString);
    int colunas = atoi(colunasString);
    // printf("Lendo matriz com %d linhas e %d colunas\n", linhas, colunas);
    if (linhas == 0 || colunas == 0) {
