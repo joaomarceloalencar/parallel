@@ -35,6 +35,10 @@ openmp_debug: matriz_debug
 	gcc -g -O2 -shared-libgcc -fopenmp -I$(INCLUDEDIR) -c $(SRCDIR)/main.c -o $(BINDIR)/main_openmp.o
 	gcc -g -O2 -shared-libgcc -fopenmp $(BINDIR)/main_openmp.o -L$(LIBDIR) -lmatriz -lopenblas -o $(BINDIR)/matmult_openmp
 
+mpi: matriz
+	mpicc -fopenmp -I$(INCLUDEDIR) -c $(SRCDIR)/main_mpi.c -o $(BINDIR)/main_mpi.o
+	mpicc -fopenmp $(BINDIR)/main_mpi.o -L$(LIBDIR) -lmatriz -o $(BINDIR)/matmult_mpi
+
 clean:
 	rm $(LIBDIR)/*.so
 	rm $(BINDIR)/*
