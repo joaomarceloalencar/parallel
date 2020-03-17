@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
     double *b = malloc(size * sizeof(double));
     double *c = malloc(size * sizeof(double));
 
+    #pragma omp parallel for 
     for (int i = 0; i < size; i++) {
         a[i] = b[i] = 1.0;
         c[i] = 0;
