@@ -3,7 +3,6 @@
 #include <time.h>
 #include <omp.h>
 
-
 int compareInt(int a, int b) {
     if (a == b)
         return 0;
@@ -68,3 +67,4 @@ int main(int argc, char *argv[]) {
     free(data);
     return 0;
 }
+
