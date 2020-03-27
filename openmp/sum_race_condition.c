@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
     sscanf(argv[1], "%d", &max);
     int sum = 0;
     
-    #pragma omp parallel for
+    #pragma omp parallel for reduction(+:sum)
     for (int i = 0; i <= max; i++)
         sum = sum + i;
     

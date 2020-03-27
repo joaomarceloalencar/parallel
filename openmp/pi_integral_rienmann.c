@@ -15,6 +15,16 @@ int main(int argc, char *argv[]) {
         double fx = sqrt(1.0 - x * x);
         integral = integral + fx * dx;
     }
+
+    /* Versão não paralelizável 
+    double x = 0.0;
+    #pragma omp parallel for reduction (+:integral)
+    for (int i = 0; i <= intervals; i++) {
+        double x = i * dx;
+        double fx = sqrt(1.0 - x * x);
+        integral = integral + fx * dx;
+    }
+    */
        
     double pi = 4 * integral;   
     printf("%20.18lf\n", pi);
