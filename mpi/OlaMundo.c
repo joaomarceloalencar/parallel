@@ -23,4 +23,6 @@ int main(int argc, char *argv[]) {
 
    // Finalizar o ambiente. 
    MPI_Finalize();
+   
+   return 0;
 }
