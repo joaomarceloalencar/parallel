@@ -3,7 +3,7 @@
 #include <math.h>
 #include "jacobi.h"
 
-#define ECHO 1
+#define ECHO 0
 
 int main(int argc, char *argv[]){
     int n;

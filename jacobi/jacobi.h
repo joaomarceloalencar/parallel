@@ -27,7 +27,6 @@ void randomValues2dMatrix(double **m, int l, int c, double max) {
 }
 
 void stableValues2dMatrix(double **m, int l, int c) {
-    srand((unsigned) time(0));
     for(int i = 0; i < l; i++)
         for(int j = 0; j < c; j++) {
             if (i == 0 || j == 0)
@@ -35,7 +34,7 @@ void stableValues2dMatrix(double **m, int l, int c) {
             else if (i == l - 1 || j == c - 1)
                 m[i][j] = 0;
             else
-            m[i][j] = i * j;
+                m[i][j] = i * j;
         }
     return;
 }
