@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < TAM; i++)
         inbuf[i] = (float) (my_rank * TAM + i);
 
-    MPI_Reduce(inbuf, outbuf, TAM, MPI_FLOAT, MPI_MAX, root, MPI_COMM_WORLD);
+    MPI_Reduce(inbuf, outbuf, TAM, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
 
     if (my_rank == 0) {
         for (i = 0; i < TAM; i++)

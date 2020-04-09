@@ -1,44 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "mpi.h"
 
-int main(int argc, char *argv[]) {
-    int numprocs, rank, tag = 100, msg_size = 64;
-    char *buf;
-    MPI_Status status;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+int main (int argc, char *argv[]) {
+   int rank, size;
+   int value = 0;
+   MPI_Status status;
 
-    if (numprocs != 2)     {
-        printf("São necessários 2 processos!\n");
-        MPI_Finalize();
-        return (0);
-    }
-    
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    printf("Processo MPI %d incializado ...\n", rank);
-    fflush(stdout);
-    while (msg_size < 10000000)
-    {
-        msg_size = msg_size * 2;
-        buf = (char *)malloc(msg_size * sizeof(char));
-        if (rank == 0)
-        {
-            MPI_Send(buf, msg_size, MPI_BYTE, rank + 1, tag, MPI_COMM_WORLD);
-            printf("Mensagem de tamanho %d para processo %d\n", msg_size, rank + 1);
-            fflush(stdout);
-            MPI_Recv(buf, msg_size, MPI_BYTE, rank + 1, tag, MPI_COMM_WORLD, &status);
-        }
-        if (rank == 1)
-        {
-            // MPI_Recv(buf , msg_size , MPI_BYTE , rank -1, tag , MPI_COMM_WORLD ,
-            // &status);
-            MPI_Send(buf, msg_size, MPI_BYTE, rank - 1, tag, MPI_COMM_WORLD);
-            printf("Mensagem  de tamanho %d para processo %d\n", msg_size, rank - 1);
-            fflush(stdout);
-            MPI_Recv(buf, msg_size, MPI_BYTE, rank - 1, tag, MPI_COMM_WORLD,  &status);
-        }
-        free(buf);
-    }
-    MPI_Finalize();
+   MPI_Init (&argc, &argv);	
+   MPI_Comm_rank (MPI_COMM_WORLD, &rank);	
+   MPI_Comm_size (MPI_COMM_WORLD, &size);	
+
+   if (rank == 0) {
+       value++;
+       MPI_Send(&value, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+       printf("Processo %d: %d.\n", rank, value);		
+   } else if (rank == 1) {
+       MPI_Recv(&value, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+       value++;
+       printf("Processo %d: %d.\n", rank, value);		
+   }
+   
+   MPI_Finalize();
+   return 0;
 }
