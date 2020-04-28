@@ -20,13 +20,17 @@ int main(int argc, char *argv[]) {
     cl_uint quantidade_de_plataformas;
 
     // Recupera a quantidade de plataformas.
-    status = clGetPlatformIDs(0, 0, &quantidade_de_plataformas);
+    status = clGetPlatformIDs(0, 
+                              0, 
+                              &quantidade_de_plataformas);
     error(status, "Erro ao recuperar o número de plataformas.");
     printf("Quantidade de Plataformas: %d\n", quantidade_de_plataformas);
 
     // Recupera os identificadores de plataformas.
     cl_platform_id *plataformas = (cl_platform_id *) malloc(quantidade_de_plataformas * sizeof(cl_platform_id));
-    status = clGetPlatformIDs(quantidade_de_plataformas, plataformas, 0);
+    status = clGetPlatformIDs(quantidade_de_plataformas, 
+                              plataformas, 
+                              0);
     error(status, "Erro ao recuperar as plataformas.");
     
     // Imprime o nome das plataformas e os respectivos dispositivos
@@ -34,24 +38,40 @@ int main(int argc, char *argv[]) {
         size_t tamanho_nome_plataforma; 
 
         // Recupera o tamanho do nome e aloca a cadeia de caracteres.
-        status = clGetPlatformInfo(plataformas[i], CL_PLATFORM_NAME, 0, 0, &tamanho_nome_plataforma);
+        status = clGetPlatformInfo(plataformas[i], 
+                                   CL_PLATFORM_NAME, 
+                                   0, 
+                                   0, 
+                                   &tamanho_nome_plataforma);
         error(status, "Erro ao recuperar o tamanho do nome da plataforma.");
         char *nome_plataforma = (char *) malloc(tamanho_nome_plataforma * sizeof(char));
 
         // Recupera o nome
-        status = clGetPlatformInfo(plataformas[i], CL_PLATFORM_NAME, tamanho_nome_plataforma, nome_plataforma, 0);
+        status = clGetPlatformInfo(plataformas[i], 
+                                   CL_PLATFORM_NAME, 
+                                   tamanho_nome_plataforma, 
+                                   nome_plataforma, 
+                                   0);
         error(status, "Erro ao recuperar o nome da plataforma.");
 
         // Imprime o resultado.
         printf("Plataforma[%d]: %s\n", i, nome_plataforma);
 
         cl_uint quantidade_de_dispositivos;
-        status = clGetDeviceIDs(plataformas[i], CL_DEVICE_TYPE_ALL, 0, NULL, &quantidade_de_dispositivos);
+        status = clGetDeviceIDs(plataformas[i], 
+                                CL_DEVICE_TYPE_ALL, 
+                                0, 
+                                NULL, 
+                                &quantidade_de_dispositivos);
         error(status, "Erro ao recuperar quantidade de dispositivos da plataforma.");
         printf("Quantidade de dispositivos Intel: %d\n", quantidade_de_dispositivos);
 
-        cl_device_id *dispositivos = (cl_device_id *)malloc(quantidade_de_dispositivos * sizeof(cl_device_id));
-        status = clGetDeviceIDs(plataformas[i], CL_DEVICE_TYPE_ALL, quantidade_de_dispositivos, dispositivos, NULL);
+        cl_device_id *dispositivos = (cl_device_id *) malloc(quantidade_de_dispositivos * sizeof(cl_device_id));
+        status = clGetDeviceIDs(plataformas[i], 
+                                CL_DEVICE_TYPE_ALL, 
+                                quantidade_de_dispositivos, 
+                                dispositivos, 
+                                NULL);
         error(status, "Erro ao recuperar os IDs dos dispositivos da plataforma.");
 
         char buffer[1000];
