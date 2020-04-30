@@ -1,4 +1,4 @@
-OPENCL_DIR=C:\Intel\sw_dev_tools\OpenCL\sdk
+OPENCL_DIR=
 
 vector_addition:
 	icx /I $(OPENCL_DIR)\include $(OPENCL_DIR)\lib\x64\OpenCL.lib host.c
