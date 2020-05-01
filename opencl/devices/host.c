@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
                               0, 
                               &quantidade_de_plataformas);
     error(status, "Erro ao recuperar o número de plataformas.");
-    printf("Quantidade de Plataformas: %d\n", quantidade_de_plataformas);
+    printf("Quantidade de Plataformas: %d\n\n", quantidade_de_plataformas);
 
     // Recupera os identificadores de plataformas.
     cl_platform_id *plataformas = (cl_platform_id *) malloc(quantidade_de_plataformas * sizeof(cl_platform_id));
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
                                 NULL, 
                                 &quantidade_de_dispositivos);
         error(status, "Erro ao recuperar quantidade de dispositivos da plataforma.");
-        printf("Quantidade de dispositivos Intel: %d\n", quantidade_de_dispositivos);
+        printf("Quantidade de dispositivos %s: %d\n", nome_plataforma, quantidade_de_dispositivos);
 
         cl_device_id *dispositivos = (cl_device_id *) malloc(quantidade_de_dispositivos * sizeof(cl_device_id));
         status = clGetDeviceIDs(plataformas[i], 
@@ -80,32 +80,37 @@ int main(int argc, char *argv[]) {
         printf("=== Dispositivos da Plataforma %s: ===\n", nome_plataforma);
         for (int i = 0; i < quantidade_de_dispositivos; i++)  {
             printf(" -- Dispositivo com id %d --\n", i);
+
             clGetDeviceInfo(dispositivos[i],
                             CL_DEVICE_NAME,
                             sizeof(buffer),
                             buffer,
                             NULL);
             printf(" DEVICE_NAME = %s\n", buffer);
+            
             clGetDeviceInfo(dispositivos[i],
                             CL_DEVICE_VENDOR,
                             sizeof(buffer),
                             buffer,
                             NULL);
             printf(" DEVICE_VENDOR = %s\n", buffer);
+            
             clGetDeviceInfo(dispositivos[i],
                             CL_DEVICE_MAX_COMPUTE_UNITS,
                             sizeof(buf_uint),
                             &buf_uint,
                             NULL);
-            printf(" DEVICE_MAX_COMPUTE_UNITS = %u\n",
+            printf(" DEVICE_MAX_COMPUTE_UNITS = %u\n", 
                    (unsigned int)buf_uint);
+            
             clGetDeviceInfo(dispositivos[i],
                             CL_DEVICE_MAX_WORK_GROUP_SIZE,
                             sizeof(buf_sizet),
                             &buf_sizet,
                             NULL);
             printf(" CL_DEVICE_MAX_WORK_GROUP_SIZE = %u\n",
-                   (unsigned int)buf_uint);
+                   (unsigned int)buf_sizet);
+
             clGetDeviceInfo(dispositivos[i],
                             CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS,
                             sizeof(buf_uint),
@@ -124,10 +129,13 @@ int main(int argc, char *argv[]) {
                    (unsigned int)workitem_size[0],
                    (unsigned int)workitem_size[1],
                    (unsigned int)workitem_size[2]);
+
+            printf("\n");
         }
 
         free(dispositivos);
         free(nome_plataforma);
+        printf("\n");
     }
 
     free(plataformas);   
