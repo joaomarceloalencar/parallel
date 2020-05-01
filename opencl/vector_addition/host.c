@@ -12,6 +12,9 @@
 
 cl_int status;
 cl_int ciErr;
+cl_platform_id *platforms = NULL;
+cl_platform_id platform;
+cl_uint numPlatforms = 0;
 cl_device_id* devices = NULL;
 cl_uint numDevices = 0;
 char buffer[1000000];
@@ -52,25 +55,81 @@ int main (int argc, char *argv[]) {
 		*(srcB + i) = 1.0;	
 	}
 
+	
+	// ***************************************************************************************
+	// Etapa 0: definir a plataforma da Intel
+	// ***************************************************************************************
+	status = clGetPlatformIDs(0, 0, &numPlatforms);
+	if (status != CL_SUCCESS) {
+		printf("Erro: Falha ao recuperar a quantidade de plataformas.\n");
+		return EXIT_FAILURE;
+	}
+
+	platforms = (cl_platform_id *) malloc(numPlatforms * sizeof(cl_platform_id));
+
+	status = clGetPlatformIDs(numPlatforms, platforms, 0);
+	if (status != CL_SUCCESS) {
+		printf("Erro: Falha ao recuperar os dados das plataformas.\n");
+		return EXIT_FAILURE;
+	}
+
+	for (cl_int i = 0; i < numPlatforms; i++) {
+		size_t lengthNamePlatform;
+		char *namePlatform;
+
+		status = clGetPlatformInfo(platforms[i], CL_PLATFORM_NAME, 0, 0, &lengthNamePlatform);
+		if (status != CL_SUCCESS) {
+			printf("Erro: Falha ao recuperar o tamanho do nome da plataforma.\n");
+			return EXIT_FAILURE;
+		}
+
+		namePlatform = (char *) malloc(lengthNamePlatform * sizeof(char));
+
+		status = clGetPlatformInfo(platforms[i], CL_PLATFORM_NAME, lengthNamePlatform, namePlatform, 0);
+		if (status != CL_SUCCESS) {
+			printf("Erro: Falha ao recuperar o nome da plataforma.\n");
+			return EXIT_FAILURE;
+		}
+		printf("%s\n", namePlatform);
+		/* Para escolher NVIDIA.
+		if (strstr(namePlatform, "NVIDIA") != NULL)
+			platform = platforms[i];
+		
+		*/
+		if (strstr(namePlatform, "Intel") != NULL)
+			platform = platforms[i];
+
+		free(namePlatform);
+	}
+
+
 	// ***************************************************************************************
 	// Etapa 1: descobrir e inicializar os dispositivos
 	// ***************************************************************************************
 
-	status = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, 0, NULL, &numDevices);
+	// Caso a opção fosse executar na CPU:
+	// status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);
+	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);
 	if (status != CL_SUCCESS) {
-		printf("Erro: Falha ao criar um grupo de dispositivos!\n");
+		printf("Erro: Falha ao recuperar a quantidade de dispositivos!\n");
+		if (status == CL_INVALID_PLATFORM) printf("Plataforma Invalida.\n");
+		if (status == CL_INVALID_DEVICE) printf("Dispositivo Invalido.\n");
+		if (status == CL_INVALID_VALUE) printf("Valor Invalido.\n");
+		if (status == CL_DEVICE_NOT_FOUND) printf("Dispositivo nao encontrado.\n");
 		return EXIT_FAILURE;
 	}
 
-	printf("O número de dispositivos encontrados = %d\n", numDevices);
+	printf("Quantidade de Dispositivos = %d\n", numDevices);
 
 	// Alocar espaço suficiente para cada dispositivo.
 	devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
 
 	// Preencher com informações dos dispositivos - Mesma função, parâmetros diferentes!!!
-	status = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, numDevices, devices, NULL);
+	// Caso a opção fosse executar na CPU:
+	// status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL); 
+	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
 	if (status != CL_SUCCESS) {
-		printf("Erro: Falha ao criar um grupo de dispositivos!\n");
+		printf("Erro: Falha ao recuperar os dados dos dispositivos!\n");
 		return EXIT_FAILURE;
 	}
 
