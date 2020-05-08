@@ -50,6 +50,35 @@ size_t szLocalWorkSize; // local work size
 // Função Main
 // ***************************************************************************************
 int main (int argc, char *argv[]) {
+
+	// Verificar se são 2 parâmetros.
+    if (argc != 3) {
+		printf("Forneça dois parâmetros:\n");
+		printf("<PLATAFORMA>  : INTEL, NVIDIA ou AMD para definir a plataforma.\n");
+		printf("<DISPOSITIVO> :	GPU ou CPU para definir o dispositivo.\n");
+		printf("%s <PLATAFORMA> <DISPOSITIVO>\n", argv[0]);
+		exit(1);
+	}
+
+    // Qual plataforma o usuário deseja utiliza?
+	char chosenPlatform[100];
+    if (!strcmp(argv[1], "NVIDIA") || !strcmp(argv[1], "INTEL") || !strcmp(argv[1], "AMD") ) {
+		strcpy(chosenPlatform, argv[1]);
+	} else {
+		printf("Plataforma Inválida.\n");
+		exit(1);
+	}
+
+	// Dispositivo CPU ou GPU?
+	char chosenDevice[100];
+	if (!strcmp(argv[2], "CPU") || !strcmp(argv[2], "GPU")) {
+		strcpy(chosenDevice, argv[2]);
+	} else {
+		printf("Dispositivo Inválido.\n");
+		exit(1);
+	}
+    printf("Plataforma em procura: %s, Dispositivo em procura: %s.\n\n", chosenPlatform, chosenDevice);
+
 	// Configurar as dimensões de trabalho Global e Local
 	szLocalWorkSize = 512;
 	szGlobalWorkSize = iNumElements;
@@ -67,7 +96,7 @@ int main (int argc, char *argv[]) {
 
 	
 	// ***************************************************************************************
-	// Etapa 0: definir a plataforma da Intel
+	// Etapa 0: definir a plataforma 
 	// ***************************************************************************************
 	status = clGetPlatformIDs(0, 0, &numPlatforms);
 	if (status != CL_SUCCESS) {
@@ -83,6 +112,8 @@ int main (int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
+    // Se encontrar a plataforma o valor é 1, caso contrário 0.
+    int matchPlatform = 0;
 	for (cl_int i = 0; i < numPlatforms; i++) {
 		size_t lengthNamePlatform;
 		char *namePlatform;
@@ -100,22 +131,36 @@ int main (int argc, char *argv[]) {
 			printf("Erro: Falha ao recuperar o nome da plataforma.\n");
 			return EXIT_FAILURE;
 		}
-		printf("%s\n", namePlatform);
-		/* Para escolher NVIDIA.
-		if (strstr(namePlatform, "NVIDIA") != NULL)
-			platform = platforms[i];
-		
-		*/
-	    /* Para escolher AMD.
-		if (strstr(namePlatform, "Portable") != NULL)
-			platform = platforms[i];
-		
-		*/
-	    /* Para escolher Intel. */
-		if (strstr(namePlatform, "Intel") != NULL)
-			platform = platforms[i];
+		printf("Plataforma encontrada: %s\n", namePlatform);
 
-		free(namePlatform);
+		if (strstr(namePlatform, "NVIDIA") != NULL) {
+			if (!strcmp(chosenPlatform, "NVIDIA")) {
+				printf("Escolhendo plataforma NVIDIA.\n");
+				platform = platforms[i];
+				matchPlatform = 1;
+			}
+		} else if (strstr(namePlatform, "Intel") != NULL) {
+			if (!strcmp(chosenPlatform, "INTEL")) {
+				printf("Escolhendo plataforma INTEL.\n");
+				platform = platforms[i];
+				matchPlatform = 1;
+			}
+		} else if (strstr(namePlatform, "Portable") != NULL) {
+			if (!strcmp(chosenPlatform, "AMD")) {
+				printf("Escolhendo plataforma AMD.\n");
+				platform = platforms[i];
+				matchPlatform = 1;
+			}
+		}
+
+	    free(namePlatform);
+	}
+	
+	if (matchPlatform) {
+		printf("\nPlataforma procurada encontrada!\n");
+	} else {
+		printf("\nPlataforma procurada não encontrada!\n");
+		exit(1);
 	}
 
 
@@ -124,8 +169,12 @@ int main (int argc, char *argv[]) {
 	// ***************************************************************************************
 
 	// Caso a opção fosse executar na CPU:
-	// status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);
-	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);
+	if (!strcmp(chosenDevice,"CPU")) {
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);
+	} else {
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);
+	}
+
 	if (status != CL_SUCCESS) {
 		printf("Erro: Falha ao recuperar a quantidade de dispositivos!\n");
 		if (status == CL_INVALID_PLATFORM) printf("Plataforma Invalida.\n");
