@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
         if (myid == 0) {
             printf("Número de Intervalos: (0 sai) ");
             fflush(stdout);
-            scanf_s("%d", &n);
+            scanf("%d", &n);
             start = MPI_Wtime();
         }
 
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         
         if (myid == 0) {
             finish = MPI_Wtime();
-            printf("Pi é aprox. %.16f, Erro é %.16 f\n", pi, fabs(pi - PI25DT));
+            printf("Pi é aprox. %.16f, Erro é %.16f\n", pi, fabs(pi - PI25DT));
             printf("Tempo gasto é %f\n", finish - start);
         }
     }
