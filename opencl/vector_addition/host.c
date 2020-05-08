@@ -6,6 +6,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+/* Só para saber se estou no Linux ou Windows. */
+#ifdef __linux__
+#define LINUX 1
+#define WINDOWS 0
+#elif  _WIN32
+#define LINUX 0
+#define WINDOWS 1
+#endif
+
+
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #define CL_TARGET_OPENCL_VERSION 200
 #include <CL/cl.h>
@@ -96,6 +106,12 @@ int main (int argc, char *argv[]) {
 			platform = platforms[i];
 		
 		*/
+	    /* Para escolher AMD.
+		if (strstr(namePlatform, "Portable") != NULL)
+			platform = platforms[i];
+		
+		*/
+	    /* Para escolher Intel. */
 		if (strstr(namePlatform, "Intel") != NULL)
 			platform = platforms[i];
 
@@ -122,7 +138,7 @@ int main (int argc, char *argv[]) {
 	printf("Quantidade de Dispositivos = %d\n", numDevices);
 
 	// Alocar espaço suficiente para cada dispositivo.
-	devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
+	devices = (cl_device_id*) malloc(numDevices * sizeof(cl_device_id));
 
 	// Preencher com informações dos dispositivos - Mesma função, parâmetros diferentes!!!
 	// Caso a opção fosse executar na CPU:
@@ -166,7 +182,8 @@ int main (int argc, char *argv[]) {
 	// ***************************************************************************************
 
 	// 4.a: Ler o kernel OpenCL do arquivo e recuperar seu tamanho.
-	fopen_s(&programHandle, "VectorAdd.cl", "r");             // Alterei para fopen_s
+	if (WINDOWS) fopen_s(&programHandle, "VectorAdd.cl", "r");             // Alterei para fopen_s
+	if (LINUX) programHandle = fopen("VectorAdd.cl", "r");
 	fseek(programHandle, 0, SEEK_END);
 	programSize = ftell(programHandle);
 	rewind(programHandle);
