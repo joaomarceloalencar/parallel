@@ -192,7 +192,11 @@ int main (int argc, char *argv[]) {
 	// Preencher com informações dos dispositivos - Mesma função, parâmetros diferentes!!!
 	// Caso a opção fosse executar na CPU:
 	// status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL); 
-	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
+	if (!strcmp(chosenDevice,"CPU")) {
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL);
+	} else {
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
+	}
 	if (status != CL_SUCCESS) {
 		printf("Erro: Falha ao recuperar os dados dos dispositivos!\n");
 		return EXIT_FAILURE;
