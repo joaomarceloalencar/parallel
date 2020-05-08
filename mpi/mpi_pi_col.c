@@ -4,8 +4,8 @@
 #include "mpi.h"
 
 // Número total de interações
-#define N 1000
-#define RAIO 5
+#define N 1000000
+#define RAIO 10
 
 // Função que executa o trabalho. Está aqui por organização. 
 long generatePoints(long my_n) {

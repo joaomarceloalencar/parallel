@@ -16,33 +16,30 @@ int main (int argc, char *argv[]) {
 
    sprintf(send_buffer1, "N:%d\n", rank);   
    sprintf(send_buffer2, "N:%d\n", rank);   
-
-   if (rank % 2 == 0) {  
-      if (rank == 0 && p % 2 != 0){
+   // p = 4
+   if (rank % 2 == 0) {  // 0 e 2
+      if (rank == 0 && p % 2 != 0){ // Não ocorre 
          MPI_Send(send_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD);
          MPI_Recv(recv_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD, &status);
          MPI_Send(send_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD);
          MPI_Recv(recv_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD, &status);
-      } else if (rank == p - 1 && p % 2 != 0) {
+      } else if (rank == p - 1 && p % 2 != 0) { // Não ocorre
          MPI_Send(send_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD);
          MPI_Send(send_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD);
          MPI_Recv(recv_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD, &status);
          MPI_Recv(recv_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD, &status);
-      } else {
+      } else { // Vão ocorrer aqui.
          MPI_Send(send_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD);
          MPI_Send(send_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD);
-   
          MPI_Recv(recv_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD, &status);
          MPI_Recv(recv_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD, &status);
       }
-   } else {
+   } else { // 1 e 3
       MPI_Recv(recv_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD, &status);
       MPI_Recv(recv_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD, &status);
-      
       MPI_Send(send_buffer1, size, MPI_CHAR, left, tag, MPI_COMM_WORLD);
       MPI_Send(send_buffer2, size, MPI_CHAR, right, tag, MPI_COMM_WORLD);
    }
-
 
    printf("-------------------------\n");
    printf("Processo %s", send_buffer1);

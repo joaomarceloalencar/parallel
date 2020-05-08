@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
         // Recebe de zero o valor de my_n
         MPI_Recv(&my_n, 1, MPI_LONG, 0, 0, MPI_COMM_WORLD, &status);
         
-	// Calcula os pontos
+	    // Calcula os pontos
         my_circle = generatePoints(my_n);
 
         // Envia para 0 o valor calculado.

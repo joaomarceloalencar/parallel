@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) { // Obrigatório mais de um processo
         }
         start_c = MPI_Wtime();
         for (proc = 1; proc < p; proc++) {
-#if 1
+#if 0
             MPI_Irecv(buff, MSGSIZE, MPI_DOUBLE, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &request);
 #endif
-#if 0
+#if 1
             MPI_Recv(buff , MSGSIZE, MPI_DOUBLE , MPI_ANY_SOURCE , tag , MPI_COMM_WORLD , &status);
 #endif
         }
@@ -49,14 +49,14 @@ int main(int argc, char *argv[]) { // Obrigatório mais de um processo
         work_r = other_work(p); // cálculo local
 
         work_t = MPI_Wtime() - start_w;
-        MPI_Wait(&request, &status); // bloqueia até Irecv concluir
+        // MPI_Wait(&request, &status); // bloqueia até Irecv concluir
     }
     else { // processos escravos
         start_c = MPI_Wtime();
-#if 1
+#if 0
         MPI_Isend(buff, MSGSIZE, MPI_DOUBLE, master, tag, MPI_COMM_WORLD, &request);
 #endif 
-#if 0
+#if 1
         MPI_Send(buff, MSGSIZE,  MPI_DOUBLE, master, tag, MPI_COMM_WORLD);
 #endif
         comm_t = MPI_Wtime() - start_c;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) { // Obrigatório mais de um processo
         work_r = other_work(p); // cálculo local
 
         work_t = MPI_Wtime() - start_w;
-        MPI_Wait(&request, &status); // bloqueia até Isend concluir
+        // MPI_Wait(&request, &status); // bloqueia até Isend concluir
     }
     run_time = MPI_Wtime() - start_p;
 
