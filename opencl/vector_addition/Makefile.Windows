@@ -1,7 +1,14 @@
-OPENCL_DIR=
+# Preencha com o caminho completo do diretório que contém o  subdiretório CL, no qual temos o arquivo cl.h (da diretiva #include <CL/cl.h>)
+OPENCL_INCLUDE_DIR=
+
+# Preecha com o caminho completo para o arquivo OpenCL.lib
+OPENCL_LIB=
+
+# Escolha o compilador, cl.exe para Microsoft ou icx.exe para Intel (devem estar no PATH)
+COMPILER=
 
 vector_addition:
-	icx /I $(OPENCL_DIR)\include $(OPENCL_DIR)\lib\x64\OpenCL.lib host.c
+	$(COMPILER) /I $(OPENCL_INCLUDE_DIR) $(OPENCL_LIB) host.c
 
 clean:
 	del host.obj host.exe
