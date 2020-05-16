@@ -91,7 +91,7 @@ int main (int argc, char *argv[]) {
 	// Inicializar os arrays
 	for (int i = 0; i < iNumElements; i++) {
 		*(srcA + i) = 1.0;
-		*(srcB + i) = 0.5;	
+		*(srcB + i) = 1.0;	
 	}
 
 	
@@ -281,7 +281,7 @@ int main (int argc, char *argv[]) {
 
 	// Tamanho dos dados
 	size_t datasize = sizeof(cl_float) * iNumElements;
-	size_t datasize_c = sizeof(cl_float) * szGlobalWorkSize;
+	size_t datasize_c = sizeof(cl_float) * (szGlobalWorkSize/szLocalWorkSize);
 	
 	// Aqui você está fazendo "malloc" no dispositivo
 	bufferA = clCreateBuffer(context, CL_MEM_READ_ONLY, datasize, NULL, &status);
@@ -329,7 +329,8 @@ int main (int argc, char *argv[]) {
 	ciErr = clSetKernelArg(ckKernel, 0, sizeof(cl_mem), (void*)&bufferA);
 	ciErr |= clSetKernelArg(ckKernel, 1, sizeof(cl_mem), (void*)&bufferB);
 	ciErr |= clSetKernelArg(ckKernel, 2, sizeof(cl_mem), (void*)&bufferC);
-	ciErr |= clSetKernelArg(ckKernel, 3, sizeof(cl_int), (void*)&iNumElements);
+	ciErr |= clSetKernelArg(ckKernel, 3, sizeof(float) * szLocalWorkSize, NULL);
+	ciErr |= clSetKernelArg(ckKernel, 4, sizeof(cl_int), (void*)&iNumElements);
 
 	if (ciErr != CL_SUCCESS) {
 		printf("Erro ao configurar os argumentos do Kernel.\n");
@@ -421,7 +422,7 @@ int main (int argc, char *argv[]) {
   	// Verifica o resultado
 	result = 0.0;
 	int i;
-	for (i = 0; i < szGlobalWorkSize; i++) {
+	for (i = 0; i < (szGlobalWorkSize/szLocalWorkSize); i++) {
 		result += srcC[i];
 	}
 
