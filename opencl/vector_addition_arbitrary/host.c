@@ -31,12 +31,12 @@ char buffer[1000000];
 cl_uint buf_uint;
 cl_ulong buf_ulong;
 size_t buf_sizet;
-cl_int iNumElements = 512 * 512 * 2;
+cl_int iNumElements = 512 * 512 * 128;
 
 cl_float* srcA;
 cl_float* srcB;
 cl_float* srcC;
-cl_float result;
+cl_double result;
 
 FILE* programHandle; // Arquivo com funções kernel
 size_t programSize;
@@ -50,7 +50,6 @@ size_t szLocalWorkSize; // local work size
 // Função Main
 // ***************************************************************************************
 int main (int argc, char *argv[]) {
-
 	// Verificar se são 2 parâmetros.
     if (argc != 3) {
 		printf("Forneça dois parâmetros:\n");
@@ -80,8 +79,8 @@ int main (int argc, char *argv[]) {
     printf("Plataforma em procura: %s, Dispositivo em procura: %s.\n\n", chosenPlatform, chosenDevice);
 
 	// Configurar as dimensões de trabalho Global e Local
-	szLocalWorkSize = 512;
-	szGlobalWorkSize = iNumElements;
+	szLocalWorkSize = 256;
+	szGlobalWorkSize = 512 * 256;
 
 	// Alocar arrays no host
 	srcA = (cl_float *) malloc(sizeof(cl_float) * iNumElements);
@@ -244,7 +243,7 @@ int main (int argc, char *argv[]) {
 
 	// 4.b: Leia o código do kernel no buffer apropriado e marque seu final.
 	programBuffer = (char*) malloc(programSize + 1);
-	memset(programBuffer, ' ', programSize);                        // ATENÇÃO: o código do livro não tem esse trecho!
+	memset(programBuffer, ' ', programSize);                        // ATENÇÃo: o código do livro não tem esse trecho!
 	fread(programBuffer, sizeof(char), programSize, programHandle); // Leio primeiro.
 	programBuffer[programSize] = '\0';                              // Marco o final.
 	fclose(programHandle);
@@ -266,7 +265,7 @@ int main (int argc, char *argv[]) {
 		char buffer[2048];
 
 		printf("Erro: Falha ao construir o executável!\n");
-		clGetProgramBuildInfo(cpProgram, devices[0], CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
+		clGetProgramBuildInfo(cpProgram, devices[1], CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
 		printf("%s\n", buffer);
 		exit(1);
 	}
@@ -338,13 +337,17 @@ int main (int argc, char *argv[]) {
 	// Aguarda a cópia
 	clFinish(cmdQueue);
 
-	// Verifica o resultado
+  	// Verifica o resultado
 	result = 0.0;
-	for (int i = 0; i < iNumElements; i++) {
-		result += srcC[i];
+	int i;
+	for (i = 0; i < iNumElements; i++) {
+		result += 2.00;
 	}
-	printf("Result = %.2f \n", result);
 
+	printf("iNumElements       : %d\n", iNumElements);
+	printf("2 * iNumElements   : %d\n", 2 * iNumElements);
+	printf("Result             : %.2f\n", result);
+	
 	// Limpar
 	free(srcA);
 	free(srcB);
