@@ -31,7 +31,7 @@ char buffer[1000000];
 cl_uint buf_uint;
 cl_ulong buf_ulong;
 size_t buf_sizet;
-cl_int iNumElements = 512 * 512 * 2;
+cl_int iNumElements = 512 * 512;
 
 cl_float* srcA;
 cl_float* srcB;
