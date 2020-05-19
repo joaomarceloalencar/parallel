@@ -31,7 +31,7 @@ char buffer[1000000];
 cl_uint buf_uint;
 cl_ulong buf_ulong;
 size_t buf_sizet;
-cl_int iNumElements = 512 * 512 * 128;
+cl_int iNumElements = 512 * 512 * 256;
 // ‭512 * 512 * 128 = 33.554.432‬
 
 cl_float* srcA;
@@ -86,7 +86,7 @@ int main (int argc, char *argv[]) {
 	// Alocar arrays no host
 	srcA = (cl_float *) malloc(sizeof(cl_float) * iNumElements);
 	srcB = (cl_float *) malloc(sizeof(cl_float) * iNumElements);
-	srcC = (cl_float *) malloc(sizeof(cl_float) * szGlobalWorkSize);
+	srcC = (cl_float *) malloc(sizeof(cl_float) * szGlobalWorkSize/szLocalWorkSize);
 
 	// Inicializar os arrays
 	for (int i = 0; i < iNumElements; i++) {
@@ -349,7 +349,6 @@ int main (int argc, char *argv[]) {
 	}
 
 	// Aguarda a execução.
-	
 	ciErr = clWaitForEvents(1, &kernelEvent);
 	if (ciErr != CL_SUCCESS) {
 		printf("Erro na execução do Kernel.\n");

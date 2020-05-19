@@ -31,7 +31,7 @@ char buffer[1000000];
 cl_uint buf_uint;
 cl_ulong buf_ulong;
 size_t buf_sizet;
-cl_int iNumElements = 512 * 512 * 128;
+cl_int iNumElements = 512 * 512 * 256;
 // ‭512 * 512 * 128 = 33.554.432‬
 
 cl_float* srcA;
@@ -91,7 +91,7 @@ int main (int argc, char *argv[]) {
 	// Inicializar os arrays
 	for (int i = 0; i < iNumElements; i++) {
 		*(srcA + i) = 1.0;
-		*(srcB + i) = 0.5;	
+		*(srcB + i) = 1.0;	
 	}
 
 	
@@ -348,7 +348,6 @@ int main (int argc, char *argv[]) {
 	}
 
 	// Aguarda a execução.
-	
 	ciErr = clWaitForEvents(1, &kernelEvent);
 	if (ciErr != CL_SUCCESS) {
 		printf("Erro na execução do Kernel.\n");
@@ -364,7 +363,6 @@ int main (int argc, char *argv[]) {
 
 	clReleaseEvent(kernelEvent);
 	printf("Tempo de Execução do Kernel = %f s\n", duration);
-
 
     clFinish(cmdQueue);
 	// ***************************************************************************************
@@ -425,6 +423,8 @@ int main (int argc, char *argv[]) {
 		result += srcC[i];
 	}
 
+    printf("srcC[0] = %.2f\n", srcC[0]);
+	printf("srcC[1024] = %.2f\n", srcC[1024]);
 	printf("iNumElements         : %d\n", iNumElements);
 	printf("2 * iNumElements     : %d\n", 2 * iNumElements);
 	printf("szGlobalWorkSize     : %zd\n", szGlobalWorkSize);
