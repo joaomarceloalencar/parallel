@@ -19,7 +19,7 @@ __kernel void MatrixMultTiled(__global float* matrixA, __global float* matrixB, 
 
 	for (int tile = 0; tile < N/TILE_WIDTH; tile++) {
 		// Cada work-item irá carregar um elemento da matriz para a memória
-		// Carregando a partição da A para a memória local
+		// Carregando a partição de A para a memória local
 		matrixAsub[yLID][xLID] = matrixA[yGID * N + (xLID + tile * TILE_WIDTH)];
 		// Carregando a partição de B para a memória local
 		matrixBsub[yLID][xLID] = matrixB[(yLID + tile *TILE_WIDTH) * N + xGID];
