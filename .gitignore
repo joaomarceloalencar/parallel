@@ -4,4 +4,4 @@ matmultvetor
 a.out
 *.o
 *.so
-
+*.exe
