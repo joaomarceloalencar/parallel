@@ -1,3 +1,7 @@
+/* 
+    Replace division by multiplication (strength reduction).
+    The while loop is replaced by the for loop, keeping track of the iterations.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

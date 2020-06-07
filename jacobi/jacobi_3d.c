@@ -1,3 +1,6 @@
+/*
+    Three dimentional array to avoid copy of the plane.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
