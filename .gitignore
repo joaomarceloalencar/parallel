@@ -1,7 +1,7 @@
 comparaMatrizes  
 criarMatriz  
 matmultvetor  
-a.out
+*.out
 *.o
 *.so
 *.exe
